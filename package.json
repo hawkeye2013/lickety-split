@@ -2,11 +2,16 @@
   "name": "lickety-split",
   "version": "1.0.0",
   "description": "Lighting fast webserver framework",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsc -w & nodemon -q -w dist",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.13",
+    "typescript": "^4.4.3"
+  }
 }
