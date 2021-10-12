@@ -1,0 +1,12 @@
+name: Bump Version
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  label-version-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo running
