@@ -1,6 +1,6 @@
 {
     "name": "lickety-split",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Lighting fast webserver framework",
     "main": "dist/index.js",
     "scripts": {
