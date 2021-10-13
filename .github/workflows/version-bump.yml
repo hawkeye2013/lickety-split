@@ -43,21 +43,21 @@ jobs:
       - name: Determine new version
         id: new-version
         if: steps.bump-type.outputs.bump-type != 'null'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           OLD_VERSION=$(jq ".version" package.json -r)
           NEW_VERSION=$(npx semver $OLD_VERSION -i ${{ steps.bump-type.outputs.bump-type }})
           echo "::set-output name=new-version::$NEW_VERSION"
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Update version in package.json
         if: steps.bump-type.outputs.bump-type != 'null'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           mv package.json package.old.json
           jq --indent 4 '.version = "${{ steps.new-version.outputs.new-version }}"' package.old.json > package.json
           rm package.old.json
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Commit bump
         if: steps.bump-type.outputs.bump-type != 'null'
