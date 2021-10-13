@@ -1,4 +1,4 @@
-name: Bump Version
+name: Deploy to NPM
 on:
   pull_request:
     branches:
@@ -6,7 +6,7 @@ on:
     types: [closed]
 
 jobs:
-  label-version-bump:
+  npm-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
