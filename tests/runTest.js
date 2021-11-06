@@ -1,7 +1,5 @@
-const { runServer } = require('../dist/index');
+const { Server } = require('../dist/index');
 
-// const express = require('express')
+const server = new Server();
 
-// const app = express()
-
-runServer();
+server.listen(8080);
