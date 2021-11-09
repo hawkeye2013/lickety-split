@@ -1,25 +1,42 @@
-console.log('Server.ts 1');
 import http from 'http';
-import { Router } from './Router';
+import {Router} from './Router';
 class Server {
-  server: http.Server | undefined = undefined;
-  router: Router = new Router();
+  server: http.Server;
+  router: Router; 
+  cb: http.RequestListener;
 
-  listen(port: number, cb: Function) {
-    console.log('Server.ts 2');
-    this.server = http.createServer(function (req, res) {
-
-    });
-    this.server.on('request', (request, response) => {
+  constructor(){
+    this.router = new Router();
+    this.cb = (request: http.IncomingMessage, response: http.ServerResponse) => {
       // get the appropriate handler from the router 
-      const handler = this.router.route(request);
-      // execute handler; return response 
-      console.log(request.url);
-      console.log(handler);
-      response.writeHead(200);
-      response.end(handler(request, response));
-    });
-    this.server.listen(port);
+      try{
+        const handler = this.router.route(request);
+        if (handler === null) {
+          // no route defined
+          response.writeHead(404);
+          response.end(JSON.stringify({'error':'Resource not found'}))
+        }
+        else{
+          // route defined with associated handler
+          response.writeHead(200);
+          response.end(handler(request, response));
+        }
+      } catch (error){
+        response.writeHead(500);
+        response.end(JSON.stringify(
+          {'error': error}
+        ))
+      } 
+    };
+    this.server = http.createServer(this.cb);
+  }
+
+  callback(){
+    return this.cb;
+  }
+
+  listen(port: number, callback: () => void) { 
+    return this.server.listen(port, callback);
   }
 
   _register(method: String, path: String, handler: Function) {
@@ -46,5 +63,4 @@ class Server {
     this._register('DELETE', path, handler);
   }
 }
-console.log('Server.ts 3');
-export { Server };
+export {Server}; 

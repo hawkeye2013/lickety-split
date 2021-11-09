@@ -1,15 +1,25 @@
-import { Server, Router} from ".";
-import http from "http";
+import {Server} from "./Server";
 class _LicketySplit {
-    server: Server = new Server;
+    server: Server;
 
-    listen(port: number, cb: Function){
-        this.server.listen(port, cb);
+    constructor(){
+        this.server = new Server();
+    }
+
+    callback(){
+        return this.server.callback();
+    }
+
+    listen(port: number, callback: () => void){
+        return this.server.listen(port, callback);
+    }
+
+    address(){
+        return this.server.server.address();
     }
 
     get(path: String, handler: Function){
         // register a handler function for HTTP GET method for this path
-        console.log('LS get method');
         this.server.get(path, handler);
     }
 
@@ -28,7 +38,6 @@ class _LicketySplit {
         this.server.delete(path, handler);
     }
 }
-
 // so you don't have to use new keyword when creating LicketySplit server 
-const LicketySplit = () => { return new _LicketySplit();}
-export {LicketySplit};
+const licketysplit = () => { return new _LicketySplit();};
+export {licketysplit};

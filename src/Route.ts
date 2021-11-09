@@ -1,5 +1,3 @@
-import {IncomingMessage, ServerResponse} from "http";
-
 class Route {
     // a route consists of an HTTP method, a URL path, and a handler function 
     method : String ;
@@ -12,5 +10,4 @@ class Route {
         this.handler = handler;
     }
 }
-
-export { Route };
+export {Route};
