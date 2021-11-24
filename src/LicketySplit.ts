@@ -38,6 +38,6 @@ class _LicketySplit {
         this.server.delete(path, handler);
     }
 }
-// so you don't have to use new keyword when creating LicketySplit server 
+// so you don't have to use new keyword when creating LicketySplit server
 const licketysplit = () => { return new _LicketySplit();};
 export {licketysplit};
