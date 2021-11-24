@@ -1,23 +1,19 @@
-name: Testing
-
+name: Deploy to NPM
 on:
   pull_request:
-    branches: [main, dev]
+    branches:
+      - main
+    types: [closed]
 
 jobs:
-  build:
+  npm-deploy:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x, 14.x, 16.x]
-
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 14
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14
           cache: 'npm'
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -27,6 +23,6 @@ jobs:
       - run: npm run build --if-present
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: npm test
+      - run: npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
