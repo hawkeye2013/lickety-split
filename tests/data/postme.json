@@ -1,44 +1,45 @@
 {
-    "_id": "lickety-split-id",
-    "index": 52,
-    "guid": "test-post-test-post-test-post",
-    "isActive": true,
-    "balance": "$1,173.60",
-    "picture": "http://placehold.it/32x32?test-post-test-post-test-post",
-    "age": 99,
-    "eyeColor": "brown",
-    "name": "Lickety Split",
-    "gender": "female",
-    "company": "LICKETYSPLIT",
-    "email": "lickety@split.com",
-    "phone": "+1 (123) 456-7890",
-    "address": "555 Lickety Split Ave, Lickety, Split, 3563",
-    "about": "Fugiat excepteur tempor excepteur officia ipsum aute fugiat aliqua enim duis. Nisi dolore proident est excepteur adipisicing occaecat Lorem. Nisi velit aliqua ex veniam. Dolore consequat ad nisi aliquip. Qui et ex culpa ex et mollit cillum adipisicing. Elit culpa quis do ad reprehenderit non cillum dolor.\r\n",
-    "registered": "2019-08-04T05:44:35 +04:00",
-    "latitude": 84.594095,
-    "longitude": -32.553045,
-    "tags": [
-        "fast",
-        "lickety",
-        "split",
-        "lickety-split",
-        "speed",
-        "framework",
-        "zoom"
-    ],
-    "friends": [{
-            "id": 0,
-            "name": "Daniel Brennan"
-        },
-        {
-            "id": 1,
-            "name": "Maribel Clay"
-        },
-        {
-            "id": 2,
-            "name": "Turner Turner"
-        }
-    ],
-    "greeting": "Hello, Lickety Split! You have 0 unread messages because you read them so fast.",
-    "favoriteFruit": "licketysplit"
+  "_id": "lickety-split-id",
+  "index": 52,
+  "guid": "test-post-test-post-test-post",
+  "isActive": true,
+  "balance": "$1,173.60",
+  "picture": "http://placehold.it/32x32?test-post-test-post-test-post",
+  "age": 99,
+  "eyeColor": "brown",
+  "name": "Lickety Split",
+  "gender": "female",
+  "company": "LICKETYSPLIT",
+  "email": "lickety@split.com",
+  "phone": "+1 (123) 456-7890",
+  "address": "555 Lickety Split Ave, Lickety, Split, 3563",
+  "about": "Fugiat excepteur tempor excepteur officia ipsum aute fugiat aliqua enim duis. Nisi dolore proident est excepteur adipisicing occaecat Lorem. Nisi velit aliqua ex veniam. Dolore consequat ad nisi aliquip. Qui et ex culpa ex et mollit cillum adipisicing. Elit culpa quis do ad reprehenderit non cillum dolor.\r\n",
+  "registered": "2019-08-04T05:44:35 +04:00",
+  "latitude": 84.594095,
+  "longitude": -32.553045,
+  "tags": [
+    "fast",
+    "lickety",
+    "split",
+    "lickety-split",
+    "speed",
+    "framework",
+    "zoom"
+  ],
+  "friends": [
+    {
+      "id": 0,
+      "name": "Daniel Brennan"
+    },
+    {
+      "id": 1,
+      "name": "Maribel Clay"
+    },
+    {
+      "id": 2,
+      "name": "Turner Turner"
+    }
+  ],
+  "greeting": "Hello, Lickety Split! You have 0 unread messages because you read them so fast.",
+  "favoriteFruit": "licketysplit"
 }
