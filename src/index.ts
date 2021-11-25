@@ -1,2 +1,2 @@
-import {licketysplit} from "./LicketySplit";
-export default licketysplit;
+import { LicketySplit } from './LicketySplit';
+export default LicketySplit;

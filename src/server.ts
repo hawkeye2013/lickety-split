@@ -1,6 +1,6 @@
 import http from 'http';
-import {Router} from './Router';
-import {RequestListener, IncomingMessage, ServerResponse} from "http";
+import { Router } from './Router';
+import { RequestListener, IncomingMessage, ServerResponse } from 'http';
 import Request from './Request';
 import Response from './Response';
 
@@ -10,39 +10,36 @@ class Server {
   cb: RequestListener;
   serverOptions: {};
 
-  constructor(){
-    this.serverOptions =  {
+  constructor() {
+    this.serverOptions = {
       IncomingMessage: Request,
-      ServerResponse: Response
-    }
+      ServerResponse: Response,
+    };
     this.router = new Router();
     this.cb = (request, response) => {
       // get the appropriate handler from the router
-      try{
+      try {
         const handler = this.router.route(request);
         if (handler === undefined) {
           // no route defined
           response.writeHead(404);
-          response.end(JSON.stringify({'error':'Resource not found'}))
-        }
-        else{
+          response.end(JSON.stringify({ error: 'Resource not found' }));
+        } else {
           // route defined with associated handler
           response.writeHead(200);
           response.end(handler!(request, response));
         }
-      } catch (error){
+      } catch (error) {
         console.log(error);
         console.trace();
         response.writeHead(500);
-        response.end(JSON.stringify(
-          {'error': error}
-        ))
+        response.end(JSON.stringify({ error: error }));
       }
     };
     this.server = http.createServer(this.serverOptions, this.cb);
   }
 
-  callback(){
+  callback() {
     return this.cb;
   }
 
@@ -74,4 +71,4 @@ class Server {
     this._register('DELETE', path, handler);
   }
 }
-export {Server};
+export { Server };

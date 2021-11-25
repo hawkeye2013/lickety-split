@@ -1,13 +1,12 @@
-import { IncomingMessage } from "http";
+import { IncomingMessage } from 'http';
 
 export default class Request extends IncomingMessage {
-    parameters: any = {};
-    setParams(parameterMap: any ){
-        this.parameters = parameterMap;
-    }
+  parameters: any = {};
+  setParams(parameterMap: any) {
+    this.parameters = parameterMap;
+  }
 
-    getParams(){
-        return this.parameters;
-    }
-
+  getParams() {
+    return this.parameters;
+  }
 }
