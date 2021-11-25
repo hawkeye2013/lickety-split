@@ -31,6 +31,8 @@ class Server {
           response.end(handler!(request, response));
         }
       } catch (error){
+        console.log(error);
+        console.trace();
         response.writeHead(500);
         response.end(JSON.stringify(
           {'error': error}

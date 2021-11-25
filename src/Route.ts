@@ -15,6 +15,11 @@ class Route {
         return this;
     }
 
+    setHandler(handler: Function | undefined){
+        this.handler = handler;
+        return this;
+    }
+
     public toString = () : string => {
         return `Route (${this.method} ${this.path} ${this.handler})`
     }

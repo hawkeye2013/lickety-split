@@ -40,9 +40,24 @@ app.get('/city/:cityId/neighborhood/:neighborhoodId/restaurants', (req: Request,
     )
 });
 
+app.get('/city/:cityId/parks/:parkId/', (req: Request, res: ServerResponse) => {
+    console.log("restaurants handler");
+    res.end(
+        JSON.stringify(
+            {
+                'restaurants': [
+                    'waffle house', 'taco bell', 'applebees', 'tony romas'
+                ],
+                'params': req.getParams()
+
+            }
+        )
+    )
+});
+
+
 app.get('/city/:cityId/neighborhood/:neighborhoodId/', (req: Request, res: ServerResponse) => {
     res.end(
-
         JSON.stringify(
             {
                 'params': req.getParams()
@@ -50,6 +65,29 @@ app.get('/city/:cityId/neighborhood/:neighborhoodId/', (req: Request, res: Serve
         )
     )
 });
+
+app.get('/city/:cityId/neighborhood', (req: Request, res: ServerResponse) => {
+    res.end(
+        JSON.stringify(
+            {
+                'params': req.getParams()
+            }
+        )
+    )
+});
+
+
+app.get('/towns/:townId/building/:buildingId/', (req: Request, res: ServerResponse) => {
+    res.end(
+        JSON.stringify(
+            {
+                'params': req.getParams()
+            }
+        )
+    )
+});
+
+
 
 // POST /
 app.post('/', (req: Request, res: ServerResponse) => {
