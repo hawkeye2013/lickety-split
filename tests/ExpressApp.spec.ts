@@ -1,5 +1,5 @@
 import request from 'supertest';
-import expressApp from './expressApp';
+import expressApp from './ExpressApp';
 
 // data to test post requests
 import postMe from './data/postMe.json';
