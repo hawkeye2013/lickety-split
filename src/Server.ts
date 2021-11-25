@@ -1,41 +1,49 @@
 import http from 'http';
-import {Router} from './Router';
+import { Router } from './Router';
+import { RequestListener, IncomingMessage, ServerResponse } from 'http';
+import Request from './Request';
+import Response from './Response';
+
 class Server {
   server: http.Server;
-  router: Router; 
-  cb: http.RequestListener;
+  router: Router;
+  cb: RequestListener;
+  serverOptions: {};
 
-  constructor(){
+  constructor() {
+    this.serverOptions = {
+      IncomingMessage: Request,
+      ServerResponse: Response,
+    };
     this.router = new Router();
-    this.cb = (request: http.IncomingMessage, response: http.ServerResponse) => {
-      // get the appropriate handler from the router 
-      try{
+    this.cb = (request, response) => {
+      // get the appropriate handler from the router
+      try {
         const handler = this.router.route(request);
-        if (handler === null) {
+        if (handler === undefined) {
           // no route defined
           response.writeHead(404);
-          response.end(JSON.stringify({'error':'Resource not found'}))
-        }
-        else{
+          response.end(JSON.stringify({ error: 'Resource not found' }));
+        } else {
           // route defined with associated handler
           response.writeHead(200);
-          response.end(handler(request, response));
+          response.end(handler!(request, response));
         }
-      } catch (error){
+      } catch (error) {
+        console.log(error);
+        console.trace();
         response.writeHead(500);
-        response.end(JSON.stringify(
-          {'error': error}
-        ))
-      } 
+        response.end(JSON.stringify({ error: error }));
+      }
     };
-    this.server = http.createServer(this.cb);
+    this.server = http.createServer(this.serverOptions, this.cb);
   }
 
-  callback(){
+  callback() {
     return this.cb;
   }
 
-  listen(port: number, callback: () => void) { 
+  listen(port: number, callback: () => void) {
     return this.server.listen(port, callback);
   }
 
@@ -63,4 +71,4 @@ class Server {
     this._register('DELETE', path, handler);
   }
 }
-export {Server}; 
+export { Server };
