@@ -9,32 +9,33 @@ expressApp.use(express.json());
 
 // GET /
 // get all persons from db
-expressApp.get('/', (req, res) => {
-    res.send(data);
+expressApp.get('/', (req: express.Request, res: express.Response) => {
+  res.send(data);
 });
 
 // GET /active
 // get all persons with isActive: true
-expressApp.get('/active', (req, res) => {
-    res.send(data.filter(item => item.isActive === true));
+expressApp.get('/active', (req: express.Request, res: express.Response) => {
+  res.send(data.filter((item) => item.isActive === true));
 });
 
 // GET /friends/_id
 // Get the friends of a specific person by their id
-expressApp.get('/friends/:_id', (req, res) => {
-    res.send(data.find(item => item._id === req.params._id)?.friends)
-});
+expressApp.get(
+  '/friends/:_id',
+  (req: express.Request, res: express.Response) => {
+    res.send(data.find((item) => item._id === req.params._id)?.friends);
+  },
+);
 
 // POST /
-expressApp.post('/', (req, res) => {
-    data.push(req.body);
-    res.json({
-        '_id': req.body._id,
-        'name': req.body.name,
-        'age': req.body.age
-    })
-})
-
-
+expressApp.post('/', (req: express.Request, res: express.Response) => {
+  data.push(req.body);
+  res.json({
+    _id: req.body._id,
+    name: req.body.name,
+    age: req.body.age,
+  });
+});
 
 export default expressApp;
