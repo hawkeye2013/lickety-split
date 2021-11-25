@@ -1,4 +1,2 @@
-const runServer = () => {
-  console.log('server running!!!');
-};
-export default runServer;
+import { LicketySplit } from './LicketySplit';
+export default LicketySplit;

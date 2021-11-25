@@ -1,4 +1,5 @@
-[{
+[
+  {
     "_id": "6186dc5c719f95545ea15e5e",
     "index": 0,
     "guid": "3784abaf-0806-41bc-9502-63a4fbdb2baf",
@@ -17,32 +18,25 @@
     "registered": "2019-08-04T05:44:35 +04:00",
     "latitude": 84.594095,
     "longitude": -32.553045,
-    "tags": [
-        "voluptate",
-        "minim",
-        "quis",
-        "aliqua",
-        "non",
-        "commodo",
-        "minim"
-    ],
-    "friends": [{
-            "id": 0,
-            "name": "Daniel Brennan"
-        },
-        {
-            "id": 1,
-            "name": "Maribel Clay"
-        },
-        {
-            "id": 2,
-            "name": "Turner Turner"
-        }
+    "tags": ["voluptate", "minim", "quis", "aliqua", "non", "commodo", "minim"],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Daniel Brennan"
+      },
+      {
+        "id": 1,
+        "name": "Maribel Clay"
+      },
+      {
+        "id": 2,
+        "name": "Turner Turner"
+      }
     ],
     "greeting": "Hello, Karyn Hyde! You have 10 unread messages.",
     "favoriteFruit": "strawberry"
-},
-{
+  },
+  {
     "_id": "6186dc5c38d92d46264523d1",
     "index": 1,
     "guid": "d609a957-f279-47e1-baf3-b67dbe09da27",
@@ -61,32 +55,25 @@
     "registered": "2015-07-12T10:56:37 +04:00",
     "latitude": 66.018312,
     "longitude": 103.412615,
-    "tags": [
-        "aute",
-        "veniam",
-        "tempor",
-        "labore",
-        "ea",
-        "anim",
-        "voluptate"
-    ],
-    "friends": [{
-            "id": 0,
-            "name": "Alyson Velasquez"
-        },
-        {
-            "id": 1,
-            "name": "Roslyn Wilkerson"
-        },
-        {
-            "id": 2,
-            "name": "Helga Sexton"
-        }
+    "tags": ["aute", "veniam", "tempor", "labore", "ea", "anim", "voluptate"],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Alyson Velasquez"
+      },
+      {
+        "id": 1,
+        "name": "Roslyn Wilkerson"
+      },
+      {
+        "id": 2,
+        "name": "Helga Sexton"
+      }
     ],
     "greeting": "Hello, Hewitt Wooten! You have 7 unread messages.",
     "favoriteFruit": "banana"
-},
-{
+  },
+  {
     "_id": "6186dc5cd134f03c339782ef",
     "index": 2,
     "guid": "fffe823d-c644-4107-b3f4-9d7274524fd5",
@@ -106,31 +93,32 @@
     "latitude": 48.655226,
     "longitude": 19.327413,
     "tags": [
-        "nisi",
-        "occaecat",
-        "nisi",
-        "amet",
-        "veniam",
-        "occaecat",
-        "cupidatat"
+      "nisi",
+      "occaecat",
+      "nisi",
+      "amet",
+      "veniam",
+      "occaecat",
+      "cupidatat"
     ],
-    "friends": [{
-            "id": 0,
-            "name": "Evangelina Schmidt"
-        },
-        {
-            "id": 1,
-            "name": "Hernandez Buckner"
-        },
-        {
-            "id": 2,
-            "name": "Annabelle Murray"
-        }
+    "friends": [
+      {
+        "id": 0,
+        "name": "Evangelina Schmidt"
+      },
+      {
+        "id": 1,
+        "name": "Hernandez Buckner"
+      },
+      {
+        "id": 2,
+        "name": "Annabelle Murray"
+      }
     ],
     "greeting": "Hello, Susan Hanson! You have 7 unread messages.",
     "favoriteFruit": "banana"
-},
-{
+  },
+  {
     "_id": "6186dc5c3373df3d13b23ffb",
     "index": 3,
     "guid": "4aa6c928-713c-44ac-ab26-bd548406d559",
@@ -149,32 +137,25 @@
     "registered": "2014-12-02T08:58:47 +05:00",
     "latitude": -23.258515,
     "longitude": 52.883255,
-    "tags": [
-        "ut",
-        "sit",
-        "quis",
-        "elit",
-        "nulla",
-        "ullamco",
-        "ullamco"
-    ],
-    "friends": [{
-            "id": 0,
-            "name": "Angelina King"
-        },
-        {
-            "id": 1,
-            "name": "Allie Collins"
-        },
-        {
-            "id": 2,
-            "name": "Hillary Barnes"
-        }
+    "tags": ["ut", "sit", "quis", "elit", "nulla", "ullamco", "ullamco"],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Angelina King"
+      },
+      {
+        "id": 1,
+        "name": "Allie Collins"
+      },
+      {
+        "id": 2,
+        "name": "Hillary Barnes"
+      }
     ],
     "greeting": "Hello, Everett Bird! You have 8 unread messages.",
     "favoriteFruit": "strawberry"
-},
-{
+  },
+  {
     "_id": "6186dc5ce8738a3b61a4424d",
     "index": 4,
     "guid": "7a40d342-7e9e-45a6-9757-b120ab22ba06",
@@ -194,31 +175,32 @@
     "latitude": 3.488672,
     "longitude": 86.191075,
     "tags": [
-        "eiusmod",
-        "tempor",
-        "cillum",
-        "adipisicing",
-        "excepteur",
-        "ullamco",
-        "occaecat"
+      "eiusmod",
+      "tempor",
+      "cillum",
+      "adipisicing",
+      "excepteur",
+      "ullamco",
+      "occaecat"
     ],
-    "friends": [{
-            "id": 0,
-            "name": "Melba Walker"
-        },
-        {
-            "id": 1,
-            "name": "Sharon Dotson"
-        },
-        {
-            "id": 2,
-            "name": "Simmons Slater"
-        }
+    "friends": [
+      {
+        "id": 0,
+        "name": "Melba Walker"
+      },
+      {
+        "id": 1,
+        "name": "Sharon Dotson"
+      },
+      {
+        "id": 2,
+        "name": "Simmons Slater"
+      }
     ],
     "greeting": "Hello, Alexis Jennings! You have 8 unread messages.",
     "favoriteFruit": "apple"
-},
-{
+  },
+  {
     "_id": "6186dc5cb44ed8fb49edc5c1",
     "index": 5,
     "guid": "803e19a1-2f4c-4c79-9003-77a1504d0cb5",
@@ -238,31 +220,32 @@
     "latitude": 24.571349,
     "longitude": 76.304613,
     "tags": [
-        "nostrud",
-        "aute",
-        "reprehenderit",
-        "Lorem",
-        "magna",
-        "est",
-        "tempor"
+      "nostrud",
+      "aute",
+      "reprehenderit",
+      "Lorem",
+      "magna",
+      "est",
+      "tempor"
     ],
-    "friends": [{
-            "id": 0,
-            "name": "Sara Ayers"
-        },
-        {
-            "id": 1,
-            "name": "Wanda Garner"
-        },
-        {
-            "id": 2,
-            "name": "Cecile Kelly"
-        }
+    "friends": [
+      {
+        "id": 0,
+        "name": "Sara Ayers"
+      },
+      {
+        "id": 1,
+        "name": "Wanda Garner"
+      },
+      {
+        "id": 2,
+        "name": "Cecile Kelly"
+      }
     ],
     "greeting": "Hello, Heather Spencer! You have 2 unread messages.",
     "favoriteFruit": "banana"
-},
-{
+  },
+  {
     "_id": "6186dc5cbf6e00105b88f9f9",
     "index": 6,
     "guid": "a7b2c13c-60ed-43df-a78e-5b7655712b76",
@@ -282,28 +265,29 @@
     "latitude": -28.345404,
     "longitude": -8.621824,
     "tags": [
-        "mollit",
-        "cupidatat",
-        "est",
-        "magna",
-        "voluptate",
-        "eiusmod",
-        "dolor"
+      "mollit",
+      "cupidatat",
+      "est",
+      "magna",
+      "voluptate",
+      "eiusmod",
+      "dolor"
     ],
-    "friends": [{
-            "id": 0,
-            "name": "Dominique Greer"
-        },
-        {
-            "id": 1,
-            "name": "Colon Calderon"
-        },
-        {
-            "id": 2,
-            "name": "Kristina Hart"
-        }
+    "friends": [
+      {
+        "id": 0,
+        "name": "Dominique Greer"
+      },
+      {
+        "id": 1,
+        "name": "Colon Calderon"
+      },
+      {
+        "id": 2,
+        "name": "Kristina Hart"
+      }
     ],
     "greeting": "Hello, Francine Brady! You have 5 unread messages.",
     "favoriteFruit": "strawberry"
-}
+  }
 ]
