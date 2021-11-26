@@ -16,7 +16,9 @@ class Server {
   constructor(options: ServerConstructorOptions) {
     this.serverOptions = options;
 
-    this.rootRouter = new Router({});
+    this.rootRouter = new Router({
+      path: '/',
+    });
 
     this.routes = [];
 

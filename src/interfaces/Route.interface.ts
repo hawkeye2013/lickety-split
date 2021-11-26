@@ -1,11 +1,10 @@
 import { HandlerMethods } from './Base.interface';
-import { RoutingBase } from './RoutingBase';
+import { PathMatch } from './PathMatch.interface';
 
 export type RouteHandler = Function;
 
-export interface Route extends RoutingBase {
+export interface IRoute extends PathMatch {
   method: HandlerMethods;
-  path: String;
   handler: RouteHandler;
 }
 
