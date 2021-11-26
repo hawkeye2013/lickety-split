@@ -1,73 +1,79 @@
 import http from 'http';
 import { Router } from './Router';
-import { RequestListener, IncomingMessage, ServerResponse } from 'http';
+import { RequestListener } from 'http';
 import Request from './Request';
 import Response from './Response';
+import { ServerConstructorOptions } from './interfaces/Server.interface';
+import { Route } from './Route';
+import { HandlerMethods } from './interfaces/Base.interface';
 
 class Server {
-  server: http.Server;
-  router: Router;
-  cb: RequestListener;
-  serverOptions: {};
+  rootRouter: Router;
+  private routes: Array<Router | Route>;
+  cb: RequestListener | undefined;
+  serverOptions: ServerConstructorOptions;
 
-  constructor() {
-    this.serverOptions = {
-      IncomingMessage: Request,
-      ServerResponse: Response,
-    };
-    this.router = new Router();
-    this.cb = (request, response) => {
-      // get the appropriate handler from the router
+  constructor(options: ServerConstructorOptions) {
+    this.serverOptions = options;
+
+    this.rootRouter = new Router({});
+
+    this.routes = [];
+
+    this.setCallback();
+  }
+
+  setCallback() {
+    this.cb = (
+      request: http.IncomingMessage,
+      response: http.ServerResponse,
+    ) => {
       try {
-        const handler = this.router.route(request);
-        if (handler === undefined) {
-          // no route defined
+        const lsRequest = new Request(request);
+        const handler = this.rootRouter.matchRoute(lsRequest);
+
+        if (!handler) {
           response.writeHead(404);
           response.end(JSON.stringify({ error: 'Resource not found' }));
         } else {
-          // route defined with associated handler
+          // TODO: Execute Function and get response code from that
           response.writeHead(200);
           response.end(handler!(request, response));
         }
       } catch (error) {
         console.log(error);
-        console.trace();
         response.writeHead(500);
         response.end(JSON.stringify({ error: error }));
       }
     };
-    this.server = http.createServer(this.serverOptions, this.cb);
-  }
-
-  callback() {
-    return this.cb;
   }
 
   listen(port: number, callback: () => void) {
-    return this.server.listen(port, callback);
+    const server = http.createServer(this.cb);
+    return server.listen(port, callback);
   }
 
-  _register(method: String, path: String, handler: Function) {
-    this.router.register(method, path, handler);
+  _register(method: HandlerMethods, path: String, handler: Function) {
+    const newRoute = new Route({ method, path, handler });
+
+    this.routes.push(newRoute);
+
+    this.rootRouter.register(newRoute);
   }
 
   get(path: String, handler: Function) {
-    // register a handler function for HTTP GET method for this path
     this._register('GET', path, handler);
   }
 
   post(path: String, handler: Function) {
-    // register a handler function for HTTP POST method for this path
     this._register('POST', path, handler);
   }
 
   put(path: String, handler: Function) {
-    // register a handler function for HTTP PUT method for this path
     this._register('PUT', path, handler);
   }
 
   delete(path: String, handler: Function) {
-    // register a handler function for HTTP DELETE method for this path
     this._register('DELETE', path, handler);
   }
 }

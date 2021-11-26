@@ -1,25 +1,19 @@
+import { HandlerMethods } from './interfaces/Base.interface';
+import {
+  RouteConstructorOptions,
+  RouteHandler,
+} from './interfaces/Route.interface';
+
 class Route {
-  // a route consists of an HTTP method, a URL path, and a handler function
-  method: String;
+  type = 'ROUTE';
+  method: HandlerMethods;
   path: String;
-  handler: Function | undefined;
-  subRoutes: Array<Route>;
-  constructor(method: String, path: String, handler?: Function) {
-    this.method = method;
-    this.path = path;
-    this.handler = handler;
-    this.subRoutes = new Array<Route>();
+  handler: RouteHandler | undefined;
+  constructor(options: RouteConstructorOptions) {
+    this.method = options.method;
+    this.path = options.path;
+    this.handler = options.handler;
   }
-  addSubRoute(subRoute: Route) {
-    this.subRoutes.push(subRoute);
-    return this;
-  }
-
-  setHandler(handler: Function | undefined) {
-    this.handler = handler;
-    return this;
-  }
-
   public toString = (): string => {
     return `Route (${this.method} ${this.path} ${this.handler})`;
   };
