@@ -39,8 +39,24 @@ describe('Register Sub Router', () => {
 
     mainRouter.register(subRoute);
 
-    console.log(mainRouter);
-
     expect(mainRouter).not.toBeUndefined();
+  });
+});
+
+describe('match()', () => {
+  test('Matches on sub route', () => {
+    const mainRouter = new Router({
+      path: '/',
+    });
+
+    const subRoute = new Route({
+      method: 'GET',
+      path: 'test',
+      handler: () => {},
+    });
+
+    mainRouter.register(subRoute);
+
+    expect(mainRouter.match('GET', 'test')).toEqual(subRoute);
   });
 });

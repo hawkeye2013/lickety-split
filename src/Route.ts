@@ -14,8 +14,8 @@ class Route implements IRoute {
     this.path = options.path;
     this.handler = options.handler;
   }
-  match(): Route | undefined {
-    return this;
+  match(method: HandlerMethods, path: String): Route | undefined {
+    return this.method === method && this.path === path ? this : undefined;
   }
 
   public toString = (): string => {

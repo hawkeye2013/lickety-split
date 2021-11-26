@@ -1,6 +1,8 @@
 import { Route } from './Route';
-import { IRouter } from './interfaces/Router.interface';
-import { RouterConstructorOptions } from './interfaces/Router.interface';
+import {
+  IRouter,
+  RouterConstructorOptions,
+} from './interfaces/Router.interface';
 import { HandlerMethods } from './interfaces/Base.interface';
 import { removeLeadingSlash } from './utils/removeLeadingSlash';
 import { IncomingMessage } from 'http';
@@ -83,12 +85,16 @@ class Router implements IRouter {
     });
   }
 
-  match(): Route | undefined {
-    return new Route({
-      path: '/',
-      method: 'GET',
-      handler: () => {},
-    });
+  match(method: HandlerMethods, path: String): Route | undefined {
+    for (const element of this.routes) {
+      const match = element.match(method, path);
+
+      if (match) {
+        return match;
+      }
+    }
+
+    return undefined;
   }
 }
 export { Router };

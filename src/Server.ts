@@ -6,6 +6,7 @@ import Response from './Response';
 import { ServerConstructorOptions } from './interfaces/Server.interface';
 import { Route } from './Route';
 import { HandlerMethods } from './interfaces/Base.interface';
+import { convertMethodToEnum } from './utils/convertMethodToEnum';
 
 class Server {
   rootRouter: Router;
@@ -31,16 +32,22 @@ class Server {
       response: http.ServerResponse,
     ) => {
       try {
-        const lsRequest = new Request(request);
-        const handler = this.rootRouter.matchRoute(lsRequest);
+        const { method, url } = request;
 
-        if (!handler) {
-          response.writeHead(404);
-          response.end(JSON.stringify({ error: 'Resource not found' }));
+        const parsedMethod = convertMethodToEnum(method);
+
+        if (parsedMethod !== undefined && url !== undefined) {
+          const handler = this.rootRouter.match(parsedMethod, url);
+          if (!handler) {
+            response.writeHead(404);
+            response.end(JSON.stringify({ error: 'Resource not found' }));
+          } else {
+            // TODO: Execute Function and get response code from that
+            response.writeHead(200);
+            response.end(handler!(request, response));
+          }
         } else {
-          // TODO: Execute Function and get response code from that
-          response.writeHead(200);
-          response.end(handler!(request, response));
+          // TODO: Add Handler if these are undefined, they shouldn't be but who knows...
         }
       } catch (error) {
         console.log(error);

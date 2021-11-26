@@ -11,3 +11,25 @@ describe('Constructor', () => {
     expect(route).not.toBeUndefined();
   });
 });
+
+describe('match()', () => {
+  test('Success', () => {
+    const route = new Route({
+      path: 'testing',
+      method: 'GET',
+      handler: () => {},
+    });
+
+    expect(route.match('GET', 'testing')).toEqual(route);
+  });
+
+  test('Fail', () => {
+    const route = new Route({
+      path: 'testing',
+      method: 'GET',
+      handler: () => {},
+    });
+
+    expect(route.match('GET', 'test123')).toBeUndefined();
+  });
+});
