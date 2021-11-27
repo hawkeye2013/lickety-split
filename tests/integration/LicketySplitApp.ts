@@ -18,14 +18,14 @@ app.get('/active', (req: IncomingMessage, res: ServerResponse) => {
   res.end(JSON.stringify(data.filter((item) => item.isActive === true)));
 });
 
-// // GET /friends/_id
-// // Get the friends of a specific person by their id
-// app.get('/friends/:_id', (req: IncomingMessage, res: ServerResponse) => {
-//   const queryObject = url.parse(req.url!, true).query;
-//   res.end(
-//     JSON.stringify(data.find((item) => item._id === queryObject._id)?.friends),
-//   );
-// });
+// GET /friends/_id
+// Get the friends of a specific person by their id
+app.get('/friends/:_id', (req: IncomingMessage, res: ServerResponse) => {
+  const queryObject = url.parse(req.url!, true).query;
+  res.end(
+    JSON.stringify(data.find((item) => item._id === queryObject._id)?.friends),
+  );
+});
 
 // POST /
 app.post('/', (req: IncomingMessage, res: ServerResponse) => {
