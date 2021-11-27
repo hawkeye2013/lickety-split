@@ -1,3 +1,4 @@
+import { DataType } from './Parser.interface';
 import { HandlerMethods } from './Base.interface';
 import { PathMatch } from './PathMatch.interface';
 
@@ -12,4 +13,5 @@ export type RouteConstructorOptions = {
   method: HandlerMethods;
   path: String;
   handler: RouteHandler;
+  acceptedDataType?: DataType;
 };

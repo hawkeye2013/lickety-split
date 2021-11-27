@@ -4,15 +4,18 @@ import {
   RouteConstructorOptions,
   RouteHandler,
 } from './interfaces/Route.interface';
+import { DataType } from './interfaces/Parser.interface';
 
 class Route implements IRoute {
   method: HandlerMethods;
   path: String;
   handler: RouteHandler;
+  acceptedDataType: DataType | undefined;
   constructor(options: RouteConstructorOptions) {
     this.method = options.method;
     this.path = options.path;
     this.handler = options.handler;
+    this.acceptedDataType = options.acceptedDataType;
   }
   match(method: HandlerMethods, path: String): Route | undefined {
     return this.method === method && this.path === path ? this : undefined;

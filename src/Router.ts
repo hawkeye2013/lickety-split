@@ -69,16 +69,6 @@ class Router implements IRouter {
     this.routes.push(newRoute);
   }
 
-  hasExistingPath(method: HandlerMethods, path: String) {
-    this.routes.find((route) => {
-      if (route instanceof Route) {
-        return route.method === method && route.path === path;
-      } else {
-        return route.path === path;
-      }
-    });
-  }
-
   match(method: HandlerMethods, path: String): Route | undefined {
     for (const element of this.routes) {
       const match = element.match(method, path);

@@ -5,7 +5,7 @@ import { ServerConstructorOptions } from './interfaces/Server.interface';
 import { Route } from './Route';
 import { HandlerMethods } from './interfaces/Base.interface';
 import { convertMethodToEnum } from './utils/convertMethodToEnum';
-import { removeLeadingSlash } from './utils/removeLeadingSlash';
+import { RouteConstructorOptions } from './interfaces/Route.interface';
 
 class Server {
   rootRouter: Router;
@@ -51,9 +51,7 @@ class Server {
             response.writeHead(404);
             response.end(JSON.stringify({ error: 'Resource not found' }));
           } else {
-            // TODO: Execute Function and get response code from that
-            response.writeHead(200);
-            response.end(matchingRoute.handler!(request, response));
+            this.executeMatchingRoute(request, response, matchingRoute);
           }
         } else {
           // TODO: Add Handler if these are undefined, they shouldn't be but who knows...
@@ -64,6 +62,16 @@ class Server {
         response.end(JSON.stringify({ error: error }));
       }
     };
+  }
+
+  executeMatchingRoute(
+    request: http.IncomingMessage,
+    response: http.ServerResponse,
+    route: Route,
+  ) {
+    // TODO: Execute Function and get response code from that
+    response.writeHead(200);
+    response.end(route.handler!(request, response));
   }
 
   address() {
@@ -78,28 +86,33 @@ class Server {
     return this.server.listen(port, callback);
   }
 
-  private _register(method: HandlerMethods, path: String, handler: Function) {
-    const newRoute = new Route({ method, path, handler });
+  register(
+    method: HandlerMethods,
+    path: String,
+    handler: Function,
+    options?: RouteConstructorOptions,
+  ) {
+    const newRoute = new Route({ ...options, method, path, handler });
 
     this.routes.push(newRoute);
 
     this.rootRouter.register(newRoute);
   }
 
-  get(path: String, handler: Function) {
-    this._register('GET', path, handler);
+  get(path: String, handler: Function, options?: RouteConstructorOptions) {
+    this.register('GET', path, handler, options);
   }
 
-  post(path: String, handler: Function) {
-    this._register('POST', path, handler);
+  post(path: String, handler: Function, options?: RouteConstructorOptions) {
+    this.register('POST', path, handler, options);
   }
 
-  put(path: String, handler: Function) {
-    this._register('PUT', path, handler);
+  put(path: String, handler: Function, options?: RouteConstructorOptions) {
+    this.register('PUT', path, handler, options);
   }
 
-  delete(path: String, handler: Function) {
-    this._register('DELETE', path, handler);
+  delete(path: String, handler: Function, options?: RouteConstructorOptions) {
+    this.register('DELETE', path, handler, options);
   }
 }
 export { Server };
