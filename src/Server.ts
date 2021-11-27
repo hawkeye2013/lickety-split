@@ -5,10 +5,9 @@ import { ServerConstructorOptions } from './interfaces/Server.interface';
 import { Route } from './Route';
 import { HandlerMethods } from './interfaces/Base.interface';
 import { convertMethodToEnum } from './utils/convertMethodToEnum';
-import { RouteConstructorOptions } from './interfaces/Route.interface';
+import { removeLeadingSlash } from './utils/removeLeadingSlash';
 
 class Server {
-  rootRouter: Router;
   private routes: Array<Router | Route>;
   cb: RequestListener | undefined;
   server: http.Server;
@@ -16,10 +15,6 @@ class Server {
 
   constructor(options: ServerConstructorOptions) {
     this.serverOptions = options;
-
-    this.rootRouter = new Router({
-      path: '/',
-    });
 
     this.routes = [];
 
@@ -45,7 +40,7 @@ class Server {
         const parsedMethod = convertMethodToEnum(method);
 
         if (parsedMethod !== undefined && url !== undefined) {
-          const matchingRoute = this.rootRouter.match(parsedMethod, url);
+          const matchingRoute = this.match(parsedMethod, url);
 
           if (!matchingRoute) {
             response.writeHead(404);
@@ -86,33 +81,88 @@ class Server {
     return this.server.listen(port, callback);
   }
 
-  register(
-    method: HandlerMethods,
-    path: String,
-    handler: Function,
-    options?: RouteConstructorOptions,
-  ) {
-    const newRoute = new Route({ ...options, method, path, handler });
+  getRouters(): Array<Router> {
+    return this.routes.filter(
+      (element) => element instanceof Router,
+    ) as Router[];
+  }
+
+  getRoutes(): Array<Route> {
+    return this.routes.filter((element) => element instanceof Route) as Route[];
+  }
+
+  register(artifact: Route | Router) {
+    if (artifact instanceof Router) {
+      this.registerRouter(artifact as Router);
+    } else {
+      this.registerRoute(artifact as Route);
+    }
+  }
+
+  registerRouter(artifact: Router) {
+    artifact.path = removeLeadingSlash(artifact.path);
+
+    const pathElements = artifact.path.split('/');
+
+    if (pathElements.length > 1) {
+      const intermediateRouter = new Router({
+        path: pathElements[0],
+      });
+
+      intermediateRouter.register(
+        new Router({
+          path: pathElements.slice(1).join('/'),
+        }),
+      );
+
+      this.routes.push(intermediateRouter);
+    } else {
+      this.routes.push(artifact);
+    }
+  }
+
+  registerRoute(artifact: Route) {
+    const newRoute = artifact;
+
+    if (artifact.path === '/' || artifact.path === '') {
+      newRoute.path === '/';
+    }
 
     this.routes.push(newRoute);
-
-    this.rootRouter.register(newRoute);
   }
 
-  get(path: String, handler: Function, options?: RouteConstructorOptions) {
-    this.register('GET', path, handler, options);
+  match(method: HandlerMethods, path: String): Route | undefined {
+    for (const element of this.routes) {
+      const match = element.match(method, path);
+
+      if (match) {
+        return match;
+      }
+    }
+
+    return undefined;
   }
 
-  post(path: String, handler: Function, options?: RouteConstructorOptions) {
-    this.register('POST', path, handler, options);
+  private _register(method: HandlerMethods, path: String, handler: Function) {
+    const newRoute = new Route({ method, path, handler });
+
+    this.routes.push(newRoute);
   }
 
-  put(path: String, handler: Function, options?: RouteConstructorOptions) {
-    this.register('PUT', path, handler, options);
+  get(path: String, handler: Function) {
+    this._register('GET', path, handler);
   }
 
-  delete(path: String, handler: Function, options?: RouteConstructorOptions) {
-    this.register('DELETE', path, handler, options);
+  post(path: String, handler: Function) {
+    this._register('POST', path, handler);
+  }
+
+  put(path: String, handler: Function) {
+    this._register('PUT', path, handler);
+  }
+
+  delete(path: String, handler: Function) {
+    this._register('DELETE', path, handler);
   }
 }
 export { Server };
