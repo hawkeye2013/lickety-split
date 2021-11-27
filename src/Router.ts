@@ -6,6 +6,7 @@ import {
 import { HandlerMethods } from './interfaces/Base.interface';
 import { removeLeadingSlash } from './utils/removeLeadingSlash';
 import { IncomingMessage } from 'http';
+import { RouteAlreadyRegisteredError } from './Errors/RouteAlreadyRegisteredError';
 
 class Router implements IRouter {
   path: String;
@@ -37,40 +38,35 @@ class Router implements IRouter {
   }
 
   registerRouter(artifact: Router) {
-    this.routes.push(artifact);
+    artifact.path = removeLeadingSlash(artifact.path);
+
+    const pathElements = artifact.path.split('/');
+
+    if (pathElements.length > 1) {
+      const intermediateRouter = new Router({
+        path: pathElements[0],
+      });
+
+      intermediateRouter.register(
+        new Router({
+          path: pathElements.slice(1).join('/'),
+        }),
+      );
+
+      this.routes.push(intermediateRouter);
+    } else {
+      this.routes.push(artifact);
+    }
   }
 
   registerRoute(artifact: Route) {
-    const { path } = artifact;
+    const newRoute = artifact;
 
-    if (path === '/' || path === '') {
-      this.registerRouteOnRootPath(artifact);
-    } else {
-      this.registerRouteOnSubPath(artifact);
+    if (artifact.path === '/' || artifact.path === '') {
+      newRoute.path === '/';
     }
-  }
 
-  registerRouteOnRootPath(artifact: Route) {
-    const { method, path, handler } = artifact;
-
-    if (
-      this.getRoutes().find(
-        (route) => route.method === method && route.path === '/',
-      )
-    ) {
-      throw Error(
-        `Route has already been registered with ${method} ${path} ${handler}`,
-      );
-    } else {
-      let route = new Route({ method, path: '/', handler });
-      this.routes.push(route);
-    }
-  }
-
-  registerRouteOnSubPath(artifact: Route) {
-    console.log(artifact);
-
-    this.routes.push(artifact);
+    this.routes.push(newRoute);
   }
 
   hasExistingPath(method: HandlerMethods, path: String) {
@@ -93,6 +89,30 @@ class Router implements IRouter {
     }
 
     return undefined;
+  }
+
+  private _register(method: HandlerMethods, path: String, handler: Function) {
+    const newRoute = new Route({ method, path, handler });
+
+    this.routes.push(newRoute);
+
+    this.register(newRoute);
+  }
+
+  get(path: String, handler: Function) {
+    this._register('GET', path, handler);
+  }
+
+  post(path: String, handler: Function) {
+    this._register('POST', path, handler);
+  }
+
+  put(path: String, handler: Function) {
+    this._register('PUT', path, handler);
+  }
+
+  delete(path: String, handler: Function) {
+    this._register('DELETE', path, handler);
   }
 }
 

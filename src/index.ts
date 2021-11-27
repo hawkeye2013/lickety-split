@@ -1,6 +1,6 @@
-import { LicketySplit } from './LicketySplit';
+import { Server } from './Server';
 import { Router } from './Router';
 import { Route } from './Route';
 
-export { LicketySplit, Router, Route };
-export default { LicketySplit, Router, Route };
+export { Server, Router, Route };
+export default { Server, Router, Route };

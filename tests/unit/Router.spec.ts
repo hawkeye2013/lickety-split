@@ -1,36 +1,68 @@
 import { Router } from '../../src/Router';
 import { Route } from '../../src/Route';
 
+let mainRouter: Router;
+
+beforeEach(() => {
+  mainRouter = new Router({
+    path: '/',
+  });
+});
+
 describe('Constructor', () => {
   test('Create Route', () => {
-    const router = new Router({
-      path: '/',
-    });
-
-    expect(router).not.toBeUndefined();
+    expect(mainRouter).not.toBeUndefined();
   });
 });
 
 describe('Register Sub Router', () => {
   test('Register Sub Router On Register', () => {
-    const mainRouter = new Router({
-      path: '/',
-    });
-
     const subRouter = new Router({
       path: 'test',
     });
 
     mainRouter.register(subRouter);
 
-    expect(mainRouter).not.toBeUndefined();
+    expect(mainRouter.getRouters()).toEqual([subRouter]);
   });
 
-  test('Register Route On Register', () => {
-    const mainRouter = new Router({
-      path: '/',
+  test('Register Router With Leading Slash', () => {
+    const subRouter = new Router({
+      path: '/test',
     });
 
+    mainRouter.register(subRouter);
+
+    expect(mainRouter.getRouters()).toEqual([
+      new Router({
+        path: 'test',
+      }),
+    ]);
+  });
+
+  test('Register Multi Path Router', () => {
+    const subRouter = new Router({
+      path: 'test/abc',
+    });
+
+    mainRouter.register(subRouter);
+
+    const expectedRouterStructure = new Router({
+      path: 'test',
+    });
+
+    expectedRouterStructure.register(
+      new Router({
+        path: 'abc',
+      }),
+    );
+
+    expect(mainRouter.getRouters()).toEqual([expectedRouterStructure]);
+  });
+});
+
+describe('Register Route', () => {
+  test('Register Route On Register', () => {
     const subRoute = new Route({
       method: 'GET',
       path: 'test',
@@ -45,10 +77,6 @@ describe('Register Sub Router', () => {
 
 describe('match()', () => {
   test('Matches on sub route', () => {
-    const mainRouter = new Router({
-      path: '/',
-    });
-
     const subRoute = new Route({
       method: 'GET',
       path: 'test',

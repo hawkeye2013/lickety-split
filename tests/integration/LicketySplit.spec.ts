@@ -1,6 +1,6 @@
 import licketySplitApp from './LicketySplitApp';
-import request from 'supertest';
-// data to test post request
+import supertest from 'supertest';
+// data to test post supertest
 import postMe from '../data/postMe.json';
 // get the expected results from JSON files
 import expectedGetRootResult from '../data/expectedGetRootResult.json';
@@ -8,117 +8,77 @@ import expectedGetActiveResult from '../data/expectedGetActiveResult.json';
 import expectedPostResult from '../data/expectedPostResult.json';
 import expected404Response from '../data/expected404Response.json';
 
-// const request(licketySplitApp) = request(http.createServer(licketySplitApp.callback()));
-
 describe('Test Express App GET /', () => {
-  test('Should respond with full database', () => {
-    return request(licketySplitApp)
+  test('Should respond with a 200 status code', (done) => {
+    supertest(licketySplitApp)
       .get('/')
-      .then((response) => {
-        var msg = '';
-
-        response
-          .on('data', (chunk) => {
-            msg += chunk.toString();
-          })
-          .on('end', () => {
-            expect(response.statusCode).toBe(200);
-            expect(JSON.parse(msg)).toMatchObject(expectedGetRootResult);
-            // done();
-          });
+      .expect(200)
+      .end((err, res) => {
+        expect(JSON.parse(res.text)).toMatchObject(expectedGetRootResult);
+        done();
       });
   });
 });
 
 describe('Test Express App GET /active', () => {
-  test('Should respond with only active users ', () => {
-    return request(licketySplitApp)
+  test('Should respond with only active users ', (done) => {
+    supertest(licketySplitApp)
       .get('/active')
-      .then((response) => {
-        var msg = '';
-        response
-          .on('data', (chunk) => {
-            msg += chunk.toString();
-          })
-          .on('end', () => {
-            expect(response.statusCode).toBe(200);
-            expect(JSON.parse(msg)).toMatchObject(expectedGetActiveResult);
-          });
+      .expect(200)
+      .end((err, res) => {
+        expect(JSON.parse(res.text)).toMatchObject(expectedGetActiveResult);
+        done();
       });
   });
 });
 
 describe('Test Express App POST / sample data', () => {
-  test.skip('Should respond with id, age and name of posted user', () => {
-    return request(licketySplitApp)
+  test.skip('Should respond with id, age and name of posted user', (done) => {
+    supertest(licketySplitApp)
       .post('/')
       .send(postMe)
-      .then((response) => {
-        var msg = '';
-        response
-          .on('data', (chunk) => {
-            msg += chunk.toString();
-          })
-          .on('end', () => {
-            expect(response.statusCode).toBe(200);
-            expect(JSON.parse(msg)).toMatchObject(expectedPostResult);
-          });
+      .expect(200)
+      .end((err, res) => {
+        expect(JSON.parse(res.text)).toMatchObject(expectedPostResult);
+        done();
       });
   });
 });
 
 describe('Test Express App GET / again, should now include POSTed data', () => {
-  test('Should respond with full database', () => {
-    return request(licketySplitApp)
+  test.skip('Should respond with full database', (done) => {
+    supertest(licketySplitApp)
       .get('/')
-      .then((response) => {
-        var msg = '';
-        response
-          .on('data', (chunk) => {
-            msg += chunk.toString();
-          })
-          .on('end', () => {
-            const expected = expectedGetRootResult;
-            expected.push(postMe);
-            expect(response.statusCode).toBe(200);
-            expect(JSON.parse(msg)).toMatchObject(expected);
-          });
+      .expect(200)
+      .end((err, res) => {
+        const expected = expectedGetRootResult;
+        expected.push(postMe);
+        expect(res.statusCode).toBe(200);
+        expect(JSON.parse(res.text)).toMatchObject(expected);
+        done();
       });
   });
 });
 
 describe('Test Express App GET /friends/_id with id of POSTed person, friends should match POSTed friends', () => {
-  test('Should respond with full database', () => {
-    return request(licketySplitApp)
+  test.skip('Should respond with full database', (done) => {
+    supertest(licketySplitApp)
       .get(`/friends/${postMe._id}`)
-      .then((response) => {
-        var msg = '';
-        response
-          .on('data', (chunk) => {
-            msg += chunk.toString();
-          })
-          .on('end', () => {
-            expect(response.statusCode).toBe(200);
-            expect(JSON.parse(msg)).toMatchObject(postMe.friends);
-          });
+      .end((err, res) => {
+        expect(JSON.parse(res.text)).toMatchObject(postMe.friends);
+        done();
       });
   });
 });
 
 describe('Test 404 GET /invalid ', () => {
-  test('Should respond with 404', () => {
-    return request(licketySplitApp)
+  test('Should respond with 404', (done) => {
+    supertest(licketySplitApp)
       .get(`/invalid`)
-      .then((response) => {
-        var msg = '';
-        response
-          .on('data', (chunk) => {
-            msg += chunk.toString();
-          })
-          .on('end', () => {
-            expect(response.statusCode).toBe(200);
-            expect(JSON.parse(msg)).toMatchObject(expected404Response);
-          });
+      .expect(200)
+      .end((err, res) => {
+        expect(JSON.parse(res.text)).toMatchObject(expected404Response);
+        done();
       });
   });
 });

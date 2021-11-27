@@ -1,17 +1,17 @@
 import http from 'http';
 import { Router } from './Router';
 import { RequestListener } from 'http';
-import Request from './Request';
-import Response from './Response';
 import { ServerConstructorOptions } from './interfaces/Server.interface';
 import { Route } from './Route';
 import { HandlerMethods } from './interfaces/Base.interface';
 import { convertMethodToEnum } from './utils/convertMethodToEnum';
+import { removeLeadingSlash } from './utils/removeLeadingSlash';
 
 class Server {
   rootRouter: Router;
   private routes: Array<Router | Route>;
   cb: RequestListener | undefined;
+  server: http.Server;
   serverOptions: ServerConstructorOptions;
 
   constructor(options: ServerConstructorOptions) {
@@ -24,6 +24,14 @@ class Server {
     this.routes = [];
 
     this.setCallback();
+
+    this.server = http.createServer(
+      {
+        IncomingMessage: http.IncomingMessage,
+        ServerResponse: http.ServerResponse,
+      },
+      this.cb,
+    );
   }
 
   setCallback() {
@@ -38,6 +46,7 @@ class Server {
 
         if (parsedMethod !== undefined && url !== undefined) {
           const matchingRoute = this.rootRouter.match(parsedMethod, url);
+
           if (!matchingRoute) {
             response.writeHead(404);
             response.end(JSON.stringify({ error: 'Resource not found' }));
@@ -57,12 +66,19 @@ class Server {
     };
   }
 
-  listen(port: number, callback: () => void) {
-    const server = http.createServer(this.cb);
-    return server.listen(port, callback);
+  address() {
+    return this.server.address();
   }
 
-  _register(method: HandlerMethods, path: String, handler: Function) {
+  callback() {
+    return this.cb;
+  }
+
+  listen(port: number, callback: () => void) {
+    return this.server.listen(port, callback);
+  }
+
+  private _register(method: HandlerMethods, path: String, handler: Function) {
     const newRoute = new Route({ method, path, handler });
 
     this.routes.push(newRoute);
