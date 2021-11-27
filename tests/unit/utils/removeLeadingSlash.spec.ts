@@ -1,4 +1,4 @@
-import { removeLeadingSlash } from '../../src/utils/removeLeadingSlash';
+import { removeLeadingSlash } from '../../../src/utils/removeLeadingSlash';
 
 describe('Success', () => {
   test('Slash exists', () => {

@@ -1,7 +1,7 @@
 // create an express app as a control variable against which LicketySplit can be compared
 
 import express from 'express';
-import data from './data/db.json';
+import data from '../data/db.json';
 const expressApp = express();
 
 // body parser middleware to parse json body of post requests

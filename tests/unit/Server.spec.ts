@@ -1,4 +1,4 @@
-import { Server } from '../src/Server';
+import { Server } from '../../src/Server';
 
 describe('Server Constructor', () => {
   test('Sets Server Options', () => {

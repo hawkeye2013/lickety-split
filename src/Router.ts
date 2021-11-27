@@ -68,9 +68,7 @@ class Router implements IRouter {
   }
 
   registerRouteOnSubPath(artifact: Route) {
-    const { path, method } = artifact;
-
-    let pathElements = removeLeadingSlash(path).split('/');
+    console.log(artifact);
 
     this.routes.push(artifact);
   }
@@ -97,4 +95,5 @@ class Router implements IRouter {
     return undefined;
   }
 }
+
 export { Router };

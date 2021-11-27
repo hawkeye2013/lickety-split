@@ -1,7 +1,7 @@
 // create an express app as a control variable against which LicketySplit can be compared
 import url from 'url';
-import { LicketySplit } from '../src/LicketySplit';
-import data from './data/db.json';
+import { LicketySplit } from '../../src/LicketySplit';
+import data from '../data/db.json';
 import { ServerResponse, IncomingMessage } from 'http';
 const licketySplitApp = LicketySplit();
 

@@ -1,4 +1,4 @@
-import { Route } from '../src/Route';
+import { Route } from '../../src/Route';
 
 describe('Constructor', () => {
   test('Create Route', () => {

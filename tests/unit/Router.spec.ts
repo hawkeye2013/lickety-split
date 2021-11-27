@@ -1,5 +1,5 @@
-import { Router } from '../src/Router';
-import { Route } from '../src/Route';
+import { Router } from '../../src/Router';
+import { Route } from '../../src/Route';
 
 describe('Constructor', () => {
   test('Create Route', () => {

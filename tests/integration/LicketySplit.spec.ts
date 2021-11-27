@@ -1,12 +1,12 @@
 import licketySplitApp from './LicketySplitApp';
 import request from 'supertest';
 // data to test post request
-import postMe from './data/postMe.json';
+import postMe from '../data/postMe.json';
 // get the expected results from JSON files
-import expectedGetRootResult from './data/expectedGetRootResult.json';
-import expectedGetActiveResult from './data/expectedGetActiveResult.json';
-import expectedPostResult from './data/expectedPostResult.json';
-import expected404Response from './data/expected404Response.json';
+import expectedGetRootResult from '../data/expectedGetRootResult.json';
+import expectedGetActiveResult from '../data/expectedGetActiveResult.json';
+import expectedPostResult from '../data/expectedPostResult.json';
+import expected404Response from '../data/expected404Response.json';
 
 // const request(licketySplitApp) = request(http.createServer(licketySplitApp.callback()));
 

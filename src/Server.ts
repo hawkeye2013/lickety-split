@@ -37,14 +37,14 @@ class Server {
         const parsedMethod = convertMethodToEnum(method);
 
         if (parsedMethod !== undefined && url !== undefined) {
-          const handler = this.rootRouter.match(parsedMethod, url);
-          if (!handler) {
+          const matchingRoute = this.rootRouter.match(parsedMethod, url);
+          if (!matchingRoute) {
             response.writeHead(404);
             response.end(JSON.stringify({ error: 'Resource not found' }));
           } else {
             // TODO: Execute Function and get response code from that
             response.writeHead(200);
-            response.end(handler!(request, response));
+            response.end(matchingRoute.handler!(request, response));
           }
         } else {
           // TODO: Add Handler if these are undefined, they shouldn't be but who knows...
