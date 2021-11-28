@@ -8,7 +8,7 @@ import { convertMethodToEnum } from './utils/convertMethodToEnum';
 import { removeLeadingSlash } from './utils/removeLeadingSlash';
 
 class Server {
-  private routes: Array<Router | Route>;
+  routes: Array<Router | Route>;
   cb: RequestListener | undefined;
   server: http.Server;
   serverOptions: ServerConstructorOptions;
@@ -79,16 +79,6 @@ class Server {
 
   listen(port: number, callback: () => void) {
     return this.server.listen(port, callback);
-  }
-
-  getRouters(): Array<Router> {
-    return this.routes.filter(
-      (element) => element instanceof Router,
-    ) as Router[];
-  }
-
-  getRoutes(): Array<Route> {
-    return this.routes.filter((element) => element instanceof Route) as Route[];
   }
 
   register(artifact: Route | Router) {

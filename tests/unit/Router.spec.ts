@@ -23,7 +23,7 @@ describe('Register Sub Router', () => {
 
     mainRouter.register(subRouter);
 
-    expect(mainRouter.getRouters()).toEqual([subRouter]);
+    expect(mainRouter.routes).toEqual([subRouter]);
   });
 
   test('Register Router With Leading Slash', () => {
@@ -33,7 +33,7 @@ describe('Register Sub Router', () => {
 
     mainRouter.register(subRouter);
 
-    expect(mainRouter.getRouters()).toEqual([
+    expect(mainRouter.routes).toEqual([
       new Router({
         path: 'test',
       }),
@@ -57,7 +57,7 @@ describe('Register Sub Router', () => {
       }),
     );
 
-    expect(mainRouter.getRouters()).toEqual([expectedRouterStructure]);
+    expect(mainRouter.routes).toEqual([expectedRouterStructure]);
   });
 });
 

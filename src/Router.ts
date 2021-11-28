@@ -5,28 +5,13 @@ import {
 } from './interfaces/Router.interface';
 import { HandlerMethods } from './interfaces/Base.interface';
 import { removeLeadingSlash } from './utils/removeLeadingSlash';
-import { IncomingMessage } from 'http';
-import { RouteAlreadyRegisteredError } from './Errors/RouteAlreadyRegisteredError';
 
 class Router implements IRouter {
   path: String;
-  private routes: Array<Router | Route>;
+  routes: Array<Router | Route>;
   constructor(options: RouterConstructorOptions) {
     this.routes = new Array<Router | Route>();
     this.path = options.path;
-  }
-  route(request: IncomingMessage): Function {
-    throw new Error('Method not implemented.');
-  }
-
-  getRouters(): Array<Router> {
-    return this.routes.filter(
-      (element) => element instanceof Router,
-    ) as Router[];
-  }
-
-  getRoutes(): Array<Route> {
-    return this.routes.filter((element) => element instanceof Route) as Route[];
   }
 
   register(artifact: Route | Router) {
