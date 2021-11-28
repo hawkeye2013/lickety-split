@@ -1,7 +1,13 @@
 import { IncomingMessage } from 'http';
 
-export default class Request extends IncomingMessage {
-  parameters: any = {};
+export default class Request {
+  incomingMessage: IncomingMessage;
+  parameters: Map<string, any> = new Map<string, any>();
+
+  constructor(rawRequest: IncomingMessage) {
+    this.incomingMessage = rawRequest;
+  }
+
   setParams(parameterMap: any) {
     this.parameters = parameterMap;
   }

@@ -2,12 +2,12 @@ import request from 'supertest';
 import expressApp from './ExpressApp';
 
 // data to test post requests
-import postMe from './data/postMe.json';
+import postMe from '../data/postMe.json';
 
 // get the expected results from JSON files
-import expectedGetRootResult from './data/expectedGetRootResult.json';
-import expectedGetActiveResult from './data/expectedGetActiveResult.json';
-import expectedPostResult from './data/expectedPostResult.json';
+import expectedGetRootResult from '../data/expectedGetRootResult.json';
+import expectedGetActiveResult from '../data/expectedGetActiveResult.json';
+import expectedPostResult from '../data/expectedPostResult.json';
 
 describe('Test Express App GET /', () => {
   test('Should respond with full database', () => {
