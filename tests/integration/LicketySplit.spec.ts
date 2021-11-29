@@ -8,7 +8,7 @@ import expectedGetActiveResult from '../data/expectedGetActiveResult.json';
 import expectedPostResult from '../data/expectedPostResult.json';
 import expected404Response from '../data/expected404Response.json';
 
-describe('Test Express App GET /', () => {
+describe('Test LicketySplit App GET /', () => {
   test('Should respond with a 200 status code', (done) => {
     supertest(licketySplitApp)
       .get('/')
@@ -20,7 +20,7 @@ describe('Test Express App GET /', () => {
   });
 });
 
-describe('Test Express App GET /active', () => {
+describe('Test LicketySplit GET /active', () => {
   test('Should respond with only active users ', (done) => {
     supertest(licketySplitApp)
       .get('/active')
@@ -32,7 +32,7 @@ describe('Test Express App GET /active', () => {
   });
 });
 
-describe('Test Express App POST / sample data', () => {
+describe('Test LicketySplit POST / sample data', () => {
   test.skip('Should respond with id, age and name of posted user', (done) => {
     supertest(licketySplitApp)
       .post('/')
@@ -45,7 +45,7 @@ describe('Test Express App POST / sample data', () => {
   });
 });
 
-describe('Test Express App GET / again, should now include POSTed data', () => {
+describe('Test LicketySplit GET / again, should now include POSTed data', () => {
   test.skip('Should respond with full database', (done) => {
     supertest(licketySplitApp)
       .get('/')
@@ -60,7 +60,7 @@ describe('Test Express App GET / again, should now include POSTed data', () => {
   });
 });
 
-describe('Test Express App GET /friends/_id with id of POSTed person, friends should match POSTed friends', () => {
+describe('Test LicketySplit GET /friends/_id with id of POSTed person, friends should match POSTed friends', () => {
   test.skip('Should respond with full database', (done) => {
     supertest(licketySplitApp)
       .get(`/friends/${postMe._id}`)

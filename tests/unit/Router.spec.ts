@@ -75,6 +75,8 @@ describe('Register Route', () => {
   });
 });
 
+
+
 describe('match()', () => {
   test('Matches on sub route', () => {
     const subRoute = new Route({
@@ -86,5 +88,44 @@ describe('match()', () => {
     mainRouter.register(subRoute);
 
     expect(mainRouter.match('GET', 'test')).toEqual(subRoute);
+  });
+});
+
+
+describe('register() ', () => {
+  test('should not register duplicate route', () => {
+    const subroute1 = new Route({
+      method: 'GET', 
+      path: 'my-route',
+      handler: () => {}
+    })
+    const subroute2 = new Route({
+      method: 'GET', 
+      path: 'my-route',
+      handler: () => {}
+    })
+    const subRouter = new Router({
+      path: 'duplicate-test'
+    })
+    subRouter.register(subroute1).register(subroute2); 
+    // should not register 2, it's duplicate (path & method are same)
+    expect(subRouter.routes).toEqual([subroute1])
+
+    const subroute3 = new Route({
+      method: 'GET', 
+      path: 'my-route2',
+      handler: () => {}
+    })
+    const subroute4 = new Route({
+      method: 'POST', 
+      path: 'my-route2',
+      handler: () => {}
+    })
+    const subRouter2 = new Router({
+      path: 'duplicate-test2'
+    })
+    subRouter2.register(subroute3).register(subroute4);
+    // should register both, method is d/f
+    expect(subRouter2.routes).toEqual([subroute3, subroute4]);
   });
 });
