@@ -13,7 +13,7 @@ describe('Constructor', () => {
 });
 
 describe('match()', () => {
-  test('Success', () => {
+  test.only('Success', () => {
     const route = new Route({
       path: 'testing',
       method: 'GET',
