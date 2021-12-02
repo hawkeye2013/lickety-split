@@ -20,7 +20,7 @@ class Route implements IRoute {
   match(method: HandlerMethods, path: String): Route | undefined {
     const processedPath = path[0] === '/' ? path : `/${path}`;
 
-    return this.method === method && this.path === processedPath
+    return this.method === method && `/${this.path}` === processedPath
       ? this
       : undefined;
   }
