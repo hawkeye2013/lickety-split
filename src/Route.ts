@@ -18,7 +18,11 @@ class Route implements IRoute {
     this.acceptedDataType = options.acceptedDataType;
   }
   match(method: HandlerMethods, path: String): Route | undefined {
-    return this.method === method && this.path === path ? this : undefined;
+    const processedPath = path[0] === '/' ? path : `/${path}`;
+
+    return this.method === method && this.path === processedPath
+      ? this
+      : undefined;
   }
 
   public toString = (): string => {
