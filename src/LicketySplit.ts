@@ -3,19 +3,11 @@ class _LicketySplit {
   server: Server;
 
   constructor() {
-    this.server = new Server();
-  }
-
-  callback() {
-    return this.server.callback();
+    this.server = new Server({});
   }
 
   listen(port: number, callback: () => void) {
     return this.server.listen(port, callback);
-  }
-
-  address() {
-    return this.server.server.address();
   }
 
   get(path: String, handler: Function) {

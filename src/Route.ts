@@ -1,23 +1,29 @@
-class Route {
-  // a route consists of an HTTP method, a URL path, and a handler function
-  method: String;
-  path: String;
-  handler: Function | undefined;
-  subRoutes: Array<Route>;
-  constructor(method: String, path: String, handler?: Function) {
-    this.method = method;
-    this.path = path;
-    this.handler = handler;
-    this.subRoutes = new Array<Route>();
-  }
-  addSubRoute(subRoute: Route) {
-    this.subRoutes.push(subRoute);
-    return this;
-  }
+import { HandlerMethods } from './interfaces/Base.interface';
+import { IRoute } from './interfaces/Route.interface';
+import {
+  RouteConstructorOptions,
+  RouteHandler,
+} from './interfaces/Route.interface';
+import { DataType } from './interfaces/Parser.interface';
 
-  setHandler(handler: Function | undefined) {
-    this.handler = handler;
-    return this;
+class Route implements IRoute {
+  method: HandlerMethods;
+  path: String;
+  handler: RouteHandler;
+  acceptedDataType: DataType | undefined;
+  constructor(options: RouteConstructorOptions) {
+    this.method = options.method;
+    this.path = options.path;
+    this.handler = options.handler;
+    this.acceptedDataType = options.acceptedDataType;
+  }
+  match(method: HandlerMethods, path: String): Route | undefined {
+    const processedPath = path[0] === '/' ? path : `/${path}`;
+    const registeredPath = this.path[0] === '/' ? this.path : `/${this.path}`;
+
+    return this.method === method && registeredPath === processedPath
+      ? this
+      : undefined;
   }
 
   public toString = (): string => {

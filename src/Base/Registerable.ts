@@ -1,17 +1,22 @@
-import { Route } from './Route';
-import {
-  IRouter,
-  RouterConstructorOptions,
-} from './interfaces/Router.interface';
-import { HandlerMethods } from './interfaces/Base.interface';
-import { removeLeadingSlash } from './utils/removeLeadingSlash';
+import { Route, Router } from '..';
+import { HandlerMethods } from '../interfaces/Base.interface';
+import { removeLeadingSlash } from '../utils/removeLeadingSlash';
 
-class Router implements IRouter {
-  path: String;
-  routes: Array<Router | Route>;
-  constructor(options: RouterConstructorOptions) {
+export class Registerable {
+  protected routes: Array<Router | Route>;
+
+  constructor() {
     this.routes = new Array<Router | Route>();
-    this.path = options.path;
+  }
+
+  getRouters(): Array<Router> {
+    return this.routes.filter(
+      (element) => element instanceof Router,
+    ) as Router[];
+  }
+
+  getRoutes(): Array<Route> {
+    return this.routes.filter((element) => element instanceof Route) as Route[];
   }
 
   register(artifact: Route | Router) {
@@ -54,20 +59,6 @@ class Router implements IRouter {
     this.routes.push(newRoute);
   }
 
-  match(method: HandlerMethods, path: String): Route | undefined {
-    for (const element of this.routes) {
-      const pathElements = path.split('/');
-
-      const match = element.match(method, pathElements.slice(1).join('/'));
-
-      if (match) {
-        return match;
-      }
-    }
-
-    return undefined;
-  }
-
   private _register(method: HandlerMethods, path: String, handler: Function) {
     const newRoute = new Route({ method, path, handler });
 
@@ -92,5 +83,3 @@ class Router implements IRouter {
     this._register('DELETE', path, handler);
   }
 }
-
-export { Router };
