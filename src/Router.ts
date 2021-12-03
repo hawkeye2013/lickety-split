@@ -61,8 +61,9 @@ class Router implements IRouter {
   }
 
   match(method: HandlerMethods, path: String): Route | undefined {
-    for (const element of this.routes) {
-      const match = element.match(method, path);
+    const pathElements = path.split('/');
+    for (const element of this.routes) {   
+      const match = element.match(method, pathElements.slice(1).join('/')); 
       if (match) {
         return match;
       }

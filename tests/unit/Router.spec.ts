@@ -81,13 +81,13 @@ describe('match()', () => {
   test('Matches on sub route', () => {
     const subRoute = new Route({
       method: 'GET',
-      path: 'test',
+      path: '/test',
       handler: () => {},
     });
 
     mainRouter.register(subRoute);
 
-    expect(mainRouter.match('GET', 'test')).toEqual(subRoute);
+    expect(mainRouter.match('GET', '/test')).toEqual(subRoute);
   });
 });
 
