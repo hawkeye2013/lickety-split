@@ -27,6 +27,46 @@ app.get('/friends/:_id', (req: IncomingMessage, res: ServerResponse) => {
   );
 });
 
+app.get('/person/:id', (req: IncomingMessage, res: ServerResponse) => {
+  const queryObject = url.parse(req.url!, true).query;
+  res.end(
+    JSON.stringify(data.find((item) => item._id === queryObject._id)),
+  );
+});
+app.get('/person/:guid', (req: IncomingMessage, res: ServerResponse) => {
+  const queryObject = url.parse(req.url!, true).query;
+  res.end(
+    JSON.stringify(data.find((item) => item.guid === queryObject.guid)),
+  );
+});
+app.get('/person/:email', (req: IncomingMessage, res: ServerResponse) => {
+  const queryObject = url.parse(req.url!, true).query;
+  res.end(
+    JSON.stringify(data.find((item) => item.email === queryObject.email)),
+  );
+});
+
+app.get('/person/:id/name', (req: IncomingMessage, res: ServerResponse) => {
+  const queryObject = url.parse(req.url!, true).query;
+  res.end(
+    JSON.stringify(data.find((item) => item._id === queryObject._id)?.name),
+  );
+});
+app.get('/person/:guid/name', (req: IncomingMessage, res: ServerResponse) => {
+  const queryObject = url.parse(req.url!, true).query;
+  res.end(
+    JSON.stringify(data.find((item) => item.guid === queryObject.guid)?.name),
+  );
+});
+app.get('/person/:email/name', (req: IncomingMessage, res: ServerResponse) => {
+  const queryObject = url.parse(req.url!, true).query;
+  res.end(
+    JSON.stringify(data.find((item) => item.email === queryObject.email)?.name),
+  );
+});
+
+
+
 // POST /
 app.post('/', (req: IncomingMessage, res: ServerResponse) => {
   var msg = '';

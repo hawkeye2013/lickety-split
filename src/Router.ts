@@ -8,58 +8,62 @@ import { removeLeadingSlash } from './utils/removeLeadingSlash';
 
 class Router implements IRouter {
   path: String;
+  method: HandlerMethods = "GET";
   routes: Array<Router | Route>;
+
   constructor(options: RouterConstructorOptions) {
     this.routes = new Array<Router | Route>();
     this.path = options.path;
+    this.method = options.method ? options.method : "GET";
   }
-
+  
   register(artifact: Route | Router) {
     if (artifact instanceof Router) {
       this.registerRouter(artifact as Router);
     } else {
       this.registerRoute(artifact as Route);
     }
+    return this;
   }
 
   registerRouter(artifact: Router) {
     artifact.path = removeLeadingSlash(artifact.path);
-
     const pathElements = artifact.path.split('/');
-
-    if (pathElements.length > 1) {
-      const intermediateRouter = new Router({
-        path: pathElements[0],
-      });
-
-      intermediateRouter.register(
-        new Router({
-          path: pathElements.slice(1).join('/'),
-        }),
-      );
-
-      this.routes.push(intermediateRouter);
-    } else {
-      this.routes.push(artifact);
-    }
+    if (! this.match(artifact.method, artifact.path)){
+      if (pathElements.length > 1) {
+        const intermediateRouter = new Router({
+          path: pathElements[0],
+        });
+        intermediateRouter.register(
+          new Router({
+            path: pathElements.slice(1).join('/'),
+          }),
+        );
+        this.routes.push(intermediateRouter);
+      } else {
+        this.routes.push(artifact);
+      }
+    } 
+    return this;
   }
 
   registerRoute(artifact: Route) {
-    const newRoute = artifact;
+    if (! this.match(artifact.method, artifact.path)){
+      const newRoute = artifact;
+      
+      if (artifact.path === '/' || artifact.path === '') {
+        newRoute.path === '/';
+      }
 
-    if (artifact.path === '/' || artifact.path === '') {
-      newRoute.path === '/';
+      this.routes.push(newRoute);
     }
-
-    this.routes.push(newRoute);
+    return this;
   }
 
   match(method: HandlerMethods, path: String): Route | undefined {
-    for (const element of this.routes) {
-      const pathElements = path.split('/');
-
-      const match = element.match(method, pathElements.slice(1).join('/'));
-
+    const pathElements = path.split('/');
+    for (const element of this.routes) {   
+      const match = element.match(method, pathElements.slice(1).join('/')); 
       if (match) {
         return match;
       }
