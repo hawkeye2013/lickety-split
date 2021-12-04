@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { Route } from './Route';
 import {
   IRouter,
@@ -8,50 +9,49 @@ import { removeLeadingSlash } from './utils/removeLeadingSlash';
 
 class Router implements IRouter {
   path: String;
-  method: HandlerMethods = "GET";
+  method: HandlerMethods = 'GET';
   routes: Array<Router | Route>;
 
   constructor(options: RouterConstructorOptions) {
     this.routes = new Array<Router | Route>();
     this.path = options.path;
-    this.method = options.method ? options.method : "GET";
+    this.method = options.method ? options.method : 'GET';
   }
-  
-  async register(artifact: Route | Router) { 
+
+  async register(artifact: Route | Router) {
     if (artifact instanceof Router) {
       await this.registerRouter(artifact as Router);
     } else {
       await this.registerRoute(artifact as Route);
-    }  
+    }
     return this;
   }
 
-  registerRouter(artifact: Router) {
+  async registerRouter(artifact: Router): Promise<Router> {
     artifact.path = removeLeadingSlash(artifact.path);
     const pathElements = artifact.path.split('/');
-    if (! this.match(artifact.method, artifact.path)){
+    if (!this.match(artifact.method, artifact.path)) {
       if (pathElements.length > 1) {
-        const intermediateRouter = new Router({
+        let intermediateRouter = new Router({
           path: pathElements[0],
         });
-        intermediateRouter.register(
+
+        intermediateRouter = await intermediateRouter.register(
           new Router({
             path: pathElements.slice(1).join('/'),
           }),
-        ).then(
-          intermediateRouter => {
-            this.routes.push(intermediateRouter);
-          }
-        ).catch( error => {throw error}); 
+        );
+
+        this.routes.push(intermediateRouter);
       } else {
         this.routes.push(artifact);
       }
-    } 
+    }
     return this;
   }
 
   registerRoute(artifact: Route) {
-    if (! this.match(artifact.method, artifact.path)){
+    if (!this.match(artifact.method, artifact.path)) {
       const newRoute = artifact;
       if (artifact.path === '/' || artifact.path === '') {
         newRoute.path === '/';
@@ -63,8 +63,15 @@ class Router implements IRouter {
 
   match(method: HandlerMethods, path: String): Route | undefined {
     const pathElements = path.split('/');
-    for (const element of this.routes) {   
-      const match = element.match(method, pathElements.slice(1).join('/')); 
+
+    for (const element of this.routes) {
+      const match = element.match(
+        method,
+        pathElements.length > 1
+          ? pathElements.slice(1).join('/')
+          : pathElements.join('/'),
+      );
+
       if (match) {
         return match;
       }
@@ -74,11 +81,13 @@ class Router implements IRouter {
   }
 
   private _register(method: HandlerMethods, path: String, handler: Function) {
-    const newRoute = new Route({ method, path, handler }); 
-    this.routes.push(newRoute); 
+    const newRoute = new Route({ method, path, handler });
+    this.routes.push(newRoute);
     this.register(newRoute)
-    .then(r => {})
-    .catch(error=>{throw error});
+      .then((r) => {})
+      .catch((error) => {
+        throw error;
+      });
   }
 
   get(path: String, handler: Function) {
