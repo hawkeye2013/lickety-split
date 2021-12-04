@@ -8,3 +8,13 @@
     - top level router, then sub routers; for each subrouter, execute in order so you have understanding of what's on top of that
     - in the top level, you can try matching in the order that the routes are defined, with ability to dive into a route and hop back out if it's not a proper match
   - path parameters, e.g. :id
+
+
+# Set Up Development Environment 
+```
+npm i 
+npm i --save-dev @types/jest
+
+```
+
+up to the user to choose a parser to use inside of a handler for a given request 

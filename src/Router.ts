@@ -17,12 +17,12 @@ class Router implements IRouter {
     this.method = options.method ? options.method : "GET";
   }
   
-  register(artifact: Route | Router) {
+  async register(artifact: Route | Router) { 
     if (artifact instanceof Router) {
-      this.registerRouter(artifact as Router);
+      await this.registerRouter(artifact as Router);
     } else {
-      this.registerRoute(artifact as Route);
-    }
+      await this.registerRoute(artifact as Route);
+    }  
     return this;
   }
 
@@ -38,8 +38,11 @@ class Router implements IRouter {
           new Router({
             path: pathElements.slice(1).join('/'),
           }),
-        );
-        this.routes.push(intermediateRouter);
+        ).then(
+          intermediateRouter => {
+            this.routes.push(intermediateRouter);
+          }
+        ).catch( error => {throw error}); 
       } else {
         this.routes.push(artifact);
       }
@@ -50,11 +53,9 @@ class Router implements IRouter {
   registerRoute(artifact: Route) {
     if (! this.match(artifact.method, artifact.path)){
       const newRoute = artifact;
-      
       if (artifact.path === '/' || artifact.path === '') {
         newRoute.path === '/';
       }
-
       this.routes.push(newRoute);
     }
     return this;
@@ -73,11 +74,11 @@ class Router implements IRouter {
   }
 
   private _register(method: HandlerMethods, path: String, handler: Function) {
-    const newRoute = new Route({ method, path, handler });
-
-    this.routes.push(newRoute);
-
-    this.register(newRoute);
+    const newRoute = new Route({ method, path, handler }); 
+    this.routes.push(newRoute); 
+    this.register(newRoute)
+    .then(r => {})
+    .catch(error=>{throw error});
   }
 
   get(path: String, handler: Function) {
