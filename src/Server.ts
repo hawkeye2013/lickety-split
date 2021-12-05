@@ -76,7 +76,6 @@ class Server {
     // TODO: Execute Function and get response code from that
     response.writeHead(200);
     let resp = route.handler!(request, response, bodyData);
-    console.log(`response = ${resp}`);
     response.end(resp);
   }
 

@@ -13,8 +13,6 @@ server.get('/test', () => {
 });
 
 server.post('/uploadfile', (request, response, body) => {
-  console.log('You have posted');
-  console.log(body);
   response.end(body);
 });
 server.listen(3000, () => {

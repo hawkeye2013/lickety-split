@@ -9,7 +9,6 @@ class JSONParser implements Parser {
   }
 
   parseData(data: string) {
-    console.log(`JSONparser is parsing data="${data}"`);
     return JSON.parse(data);
   }
   async getDataFromRequest(request: IncomingMessage): Promise<string> {
@@ -22,13 +21,10 @@ class JSONParser implements Parser {
         resolve(body);
       });
     });
-    console.log(body);
     return bodyPromise;
   }
   async parse(request: IncomingMessage): Promise<any> {
-    console.log(`JSON parser.parse(request=${request})`);
     let requestData = await this.getDataFromRequest(request);
-    console.log(`requestData=${requestData}`);
     return this.parseData(requestData);
   }
 }

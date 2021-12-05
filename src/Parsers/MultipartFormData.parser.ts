@@ -51,7 +51,6 @@ class MultipartFormDataParser implements Parser {
         body += chunk;
       });
       request.on('end', () => {
-        console.log(`on end, body=${body}`);
         resolve(body);
       });
     });
@@ -62,26 +61,18 @@ class MultipartFormDataParser implements Parser {
     // request may not be set for unit testing
     let response = undefined;
     if (this.request) {
-      console.log('request is set');
-      console.log(`data=${data}`);
       let boundary = this.getBoundary(this.request);
-      console.log(`boundary=${boundary}`);
       response = parse(Buffer.from(data, 'utf8'), boundary!);
     } else {
-      console.log('request is not set');
       response = Buffer.from(data, 'utf8');
     }
-    console.log(`returning response = ${response}`);
     return response;
   }
 
   async parse(req: IncomingMessage): Promise<any> {
     this.request = req;
-    console.log(`req=${this.request}`);
     let body = await this.getDataFromRequest(req);
-    console.log(`now calling parsedata on body=${body}`);
     let response = this.parseData(body);
-    console.log(`response after parsing body= ${response}`);
     return response;
   }
 }
