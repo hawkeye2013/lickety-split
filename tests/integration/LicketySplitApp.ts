@@ -2,7 +2,7 @@
 import url from 'url';
 import data from '../data/db.json';
 import { ServerResponse, IncomingMessage } from 'http';
-import { Server } from '../../src';
+import { Server, Route } from '../../src';
 
 const app = new Server({});
 
@@ -29,15 +29,11 @@ app.get('/friends/:_id', (req: IncomingMessage, res: ServerResponse) => {
 
 app.get('/person/:id', (req: IncomingMessage, res: ServerResponse) => {
   const queryObject = url.parse(req.url!, true).query;
-  res.end(
-    JSON.stringify(data.find((item) => item._id === queryObject._id)),
-  );
+  res.end(JSON.stringify(data.find((item) => item._id === queryObject._id)));
 });
 app.get('/person/:guid', (req: IncomingMessage, res: ServerResponse) => {
   const queryObject = url.parse(req.url!, true).query;
-  res.end(
-    JSON.stringify(data.find((item) => item.guid === queryObject.guid)),
-  );
+  res.end(JSON.stringify(data.find((item) => item.guid === queryObject.guid)));
 });
 app.get('/person/:email', (req: IncomingMessage, res: ServerResponse) => {
   const queryObject = url.parse(req.url!, true).query;
@@ -65,26 +61,35 @@ app.get('/person/:email/name', (req: IncomingMessage, res: ServerResponse) => {
   );
 });
 
-
-
 // POST /
-app.post('/', (req: IncomingMessage, res: ServerResponse) => {
-  var msg = '';
-  req
-    .on('data', function (chunk) {
-      msg += chunk.toString();
-    })
-    .on('end', () => {
-      let body = JSON.parse(msg);
-      data.push(body);
-      res.end(
-        JSON.stringify({
-          _id: body._id,
-          name: body.name,
-          age: body.age,
-        }),
-      );
-    });
+app.post('/', (req: IncomingMessage, res: ServerResponse, body: any) => {
+  res.end(
+    JSON.stringify({
+      _id: body._id,
+      name: body.name,
+      age: body.age,
+    }),
+  );
 });
+
+let uploadRoute = new Route({
+  acceptedDataType: 'multipart/form-data',
+  method: 'POST',
+  path: '/uploadfile',
+  handler: (request: IncomingMessage, response: ServerResponse, body: any) => {
+    response.end(JSON.stringify(body));
+  },
+});
+app.register(uploadRoute);
+
+let jsonPostRoute = new Route({
+  acceptedDataType: 'application/json',
+  method: 'POST',
+  path: '/jsonpost',
+  handler: (request: IncomingMessage, response: ServerResponse, body: any) => {
+    response.end(JSON.stringify(body));
+  },
+});
+app.register(jsonPostRoute);
 
 export default app;
