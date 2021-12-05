@@ -6,13 +6,5 @@ export default class Request {
 
   constructor(rawRequest: IncomingMessage) {
     this.incomingMessage = rawRequest;
-  }
-
-  setParams(parameterMap: any) {
-    this.parameters = parameterMap;
-  }
-
-  getParams() {
-    return this.parameters;
-  }
+  }  
 }

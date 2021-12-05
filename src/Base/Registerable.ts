@@ -41,9 +41,13 @@ export class Registerable {
         new Router({
           path: pathElements.slice(1).join('/'),
         }),
-      );
+      ).then(
+        intermediateRouter => {
+          this.routes.push(intermediateRouter);
+        }
+      ).catch(error => {throw error});
 
-      this.routes.push(intermediateRouter);
+      
     } else {
       this.routes.push(artifact);
     }
@@ -61,9 +65,7 @@ export class Registerable {
 
   private _register(method: HandlerMethods, path: String, handler: Function) {
     const newRoute = new Route({ method, path, handler });
-
-    this.routes.push(newRoute);
-
+    this.routes.push(newRoute); 
     this.register(newRoute);
   }
 

@@ -6,6 +6,7 @@ import { Route } from './Route';
 import { HandlerMethods } from './interfaces/Base.interface';
 import { convertMethodToEnum } from './utils/convertMethodToEnum';
 import { removeLeadingSlash } from './utils/removeLeadingSlash';
+import {getParser} from ""
 
 class Server {
   routes: Array<Router | Route>;
@@ -64,6 +65,10 @@ class Server {
     response: http.ServerResponse,
     route: Route,
   ) {
+    // check accepted data types and get parser
+    if (route.acceptedDataType) {
+      const parser = getParser(route.acceptedDataType);
+    }
     // TODO: Execute Function and get response code from that
     response.writeHead(200);
     response.end(route.handler!(request, response));
@@ -99,13 +104,16 @@ class Server {
         path: pathElements[0],
       });
 
-      intermediateRouter.register(
-        new Router({
-          path: pathElements.slice(1).join('/'),
-        }),
-      );
-
-      this.routes.push(intermediateRouter);
+      intermediateRouter
+        .register(
+          new Router({
+            path: pathElements.slice(1).join('/'),
+          }),
+        )
+        .then((intermediateRouter) => this.routes.push(intermediateRouter))
+        .catch((error) => {
+          throw error;
+        });
     } else {
       this.routes.push(artifact);
     }

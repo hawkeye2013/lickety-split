@@ -1,4 +1,4 @@
-export type DataType = 'application/json';
+export type DataType = 'application/json'
 // | 'application/javascript'
 // | 'application/octet-stream'
 // | 'application/ogg'
@@ -20,7 +20,7 @@ export type DataType = 'application/json';
 // | 'image/svg+xml'
 // | 'multipart/mixed'
 // | 'multipart/alternative'
-// | 'multipart/form-data'
+ | 'multipart/form-data'
 // | 'text/css'
 // | 'text/csv'
 // | 'text/html'

@@ -21,9 +21,14 @@ describe('Register Sub Router', () => {
       path: 'test',
     });
 
-    mainRouter.register(subRouter);
-
-    expect(mainRouter.routes).toEqual([subRouter]);
+    mainRouter
+      .register(subRouter)
+      .then((mainRouter) => {
+        expect(mainRouter.routes).toEqual([subRouter]);
+      })
+      .catch((error) => {
+        throw error;
+      });
   });
 
   test('Register Router With Leading Slash', () => {
@@ -31,13 +36,18 @@ describe('Register Sub Router', () => {
       path: '/test',
     });
 
-    mainRouter.register(subRouter);
-
-    expect(mainRouter.routes).toEqual([
-      new Router({
-        path: 'test',
-      }),
-    ]);
+    mainRouter
+      .register(subRouter)
+      .then((mainRouter) => {
+        expect(mainRouter.routes).toEqual([
+          new Router({
+            path: 'test',
+          }),
+        ]);
+      })
+      .catch((error) => {
+        throw error;
+      });
   });
 
   test('Register Multi Path Router', () => {
@@ -45,19 +55,29 @@ describe('Register Sub Router', () => {
       path: 'test/abc',
     });
 
-    mainRouter.register(subRouter);
+    mainRouter
+      .register(subRouter)
+      .then((mainRouter) => {
+        const expectedRouterStructure = new Router({
+          path: 'test',
+        });
 
-    const expectedRouterStructure = new Router({
-      path: 'test',
-    });
-
-    expectedRouterStructure.register(
-      new Router({
-        path: 'abc',
-      }),
-    );
-
-    expect(mainRouter.routes).toEqual([expectedRouterStructure]);
+        expectedRouterStructure
+          .register(
+            new Router({
+              path: 'abc',
+            }),
+          )
+          .then((expectedRouterStructure) => {
+            expect(mainRouter.routes).toEqual([expectedRouterStructure]);
+          })
+          .catch((error) => {
+            throw error;
+          });
+      })
+      .catch((error) => {
+        throw error;
+      });
   });
 });
 
@@ -69,63 +89,93 @@ describe('Register Route', () => {
       handler: () => {},
     });
 
-    mainRouter.register(subRoute);
-
-    expect(mainRouter).not.toBeUndefined();
+    mainRouter
+      .register(subRoute)
+      .then((mainRouter) => {
+        expect(mainRouter).not.toBeUndefined();
+      })
+      .catch((error) => {
+        throw error;
+      });
   });
 });
-
-
 
 describe('match()', () => {
   test('Matches on sub route', () => {
     const subRoute = new Route({
       method: 'GET',
-      path: 'test',
+      path: '/test',
       handler: () => {},
     });
 
-    mainRouter.register(subRoute);
-
-    expect(mainRouter.match('GET', 'test')).toEqual(subRoute);
+    mainRouter
+      .register(subRoute)
+      .then((mainRouter) => {
+        expect(mainRouter.match('GET', '/test')).toEqual(subRoute);
+      })
+      .catch((error) => {
+        throw error;
+      });
   });
 });
 
-
 describe('register() ', () => {
-  test('should not register duplicate route', () => {
+  test('should not register duplicate route', async () => {
     const subroute1 = new Route({
-      method: 'GET', 
+      method: 'GET',
       path: 'my-route',
-      handler: () => {}
-    })
+      handler: () => {},
+    });
     const subroute2 = new Route({
-      method: 'GET', 
+      method: 'GET',
       path: 'my-route',
-      handler: () => {}
-    })
-    const subRouter = new Router({
-      path: 'duplicate-test'
-    })
-    subRouter.register(subroute1).register(subroute2); 
-    // should not register 2, it's duplicate (path & method are same)
-    expect(subRouter.routes).toEqual([subroute1])
+      handler: () => {},
+    });
+    let subRouter = new Router({
+      path: 'duplicate-test',
+    });
 
-    const subroute3 = new Route({
-      method: 'GET', 
-      path: 'my-route2',
-      handler: () => {}
-    })
-    const subroute4 = new Route({
-      method: 'POST', 
-      path: 'my-route2',
-      handler: () => {}
-    })
-    const subRouter2 = new Router({
-      path: 'duplicate-test2'
-    })
-    subRouter2.register(subroute3).register(subroute4);
-    // should register both, method is d/f
-    expect(subRouter2.routes).toEqual([subroute3, subroute4]);
+    subRouter = await subRouter.register(subroute1);
+    subRouter = await subRouter.register(subroute2);
+
+    expect(subRouter.routes).toEqual([subroute1]);
+
+    // subRouter
+    //   .register(subroute1)
+    //   .then((subRouter) => {
+    //     subRouter
+    //       .register(subroute2)
+    //       .then((subRouter) => {
+    //       })
+    //       .catch((error) => {
+    //         throw error;
+    //       });
+    //   })
+    //   .catch((error) => {
+    //     throw error;
+    //   });
+
+    // const subroute3 = new Route({
+    //   method: 'GET',
+    //   path: 'my-route2',
+    //   handler: () => {}
+    // })
+    // const subroute4 = new Route({
+    //   method: 'POST',
+    //   path: 'my-route2',
+    //   handler: () => {}
+    // })
+    // const subRouter2 = new Router({
+    //   path: 'duplicate-test2'
+    // })
+    // subRouter2.register(subroute3).then(
+    //   subRouter2 => {
+    //     subRouter2.register(subroute4).then(
+    //       subRouter2 => {
+    //         expect(subRouter2.routes).toEqual([subroute3, subroute4]);
+    //       }
+    //     ).catch(error => {throw error})
+    //   }
+    // ).catch(error => {throw error})
   });
 });
