@@ -6,8 +6,8 @@ const getParser = (dataType: DataType): Parser => {
   switch (dataType) {
     case 'application/json':
       return new JSONParser();
-      break; 
-      
+      break;
+
     case 'multipart/form-data':
       return new MultipartFormDataParser();
       break;
@@ -17,3 +17,5 @@ const getParser = (dataType: DataType): Parser => {
       break;
   }
 };
+
+export default getParser;

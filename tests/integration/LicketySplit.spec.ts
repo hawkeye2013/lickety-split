@@ -7,7 +7,7 @@ import expectedGetRootResult from '../data/expectedGetRootResult.json';
 import expectedGetActiveResult from '../data/expectedGetActiveResult.json';
 import expectedPostResult from '../data/expectedPostResult.json';
 import expected404Response from '../data/expected404Response.json';
-
+import fs from 'fs';
 describe('Test LicketySplit App GET /', () => {
   test('Should respond with a 200 status code', (done) => {
     supertest(licketySplitApp)
@@ -78,6 +78,48 @@ describe('Test 404 GET /invalid ', () => {
       .expect(200)
       .end((err, res) => {
         expect(JSON.parse(res.text)).toMatchObject(expected404Response);
+        done();
+      });
+  });
+});
+
+describe('Test JSON post', () => {
+  test('Should respond with object representing uploaded file', (done) => {
+    supertest(licketySplitApp)
+      .post('/jsonpost')
+      .send({ name: 'john' })
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        expect(JSON.parse(res.text)).toMatchObject({
+          name: 'john',
+        });
+        done();
+      });
+  });
+});
+
+describe('Test Multipart Form Data Upload', () => {
+  test('Should respond with object representing uploaded file', (done) => {
+    supertest(licketySplitApp)
+      .post('/uploadfile')
+      .attach('image', './tests/data/multipartFormData.txt')
+      .expect(200)
+      .end((err, res) => {
+        expect(JSON.parse(res.text)).toMatchObject([
+          {
+            data: {
+              data: [
+                84, 104, 105, 115, 32, 105, 115, 32, 97, 32, 109, 117, 108, 116,
+                105, 112, 97, 114, 116, 32, 102, 111, 114, 109, 32, 100, 97,
+                116, 97, 32, 116, 101, 120, 116, 32, 102, 105, 108, 101,
+              ],
+              type: 'Buffer',
+            },
+            filename: 'multipartFormData.txt',
+            type: 'text/plain',
+          },
+        ]);
         done();
       });
   });

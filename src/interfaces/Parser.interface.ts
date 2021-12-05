@@ -1,4 +1,5 @@
-export type DataType = 'application/json'
+import { IncomingMessage } from 'http';
+export type DataType = 'application/json' | 'multipart/form-data';
 // | 'application/javascript'
 // | 'application/octet-stream'
 // | 'application/ogg'
@@ -20,7 +21,6 @@ export type DataType = 'application/json'
 // | 'image/svg+xml'
 // | 'multipart/mixed'
 // | 'multipart/alternative'
- | 'multipart/form-data'
 // | 'text/css'
 // | 'text/csv'
 // | 'text/html'
@@ -29,5 +29,5 @@ export type DataType = 'application/json'
 
 export interface Parser {
   acceptedDataType: DataType;
-  parse: (body: string) => any;
+  parse: (req: IncomingMessage) => Promise<any>;
 }

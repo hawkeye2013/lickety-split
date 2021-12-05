@@ -6,7 +6,7 @@ import { Route } from './Route';
 import { HandlerMethods } from './interfaces/Base.interface';
 import { convertMethodToEnum } from './utils/convertMethodToEnum';
 import { removeLeadingSlash } from './utils/removeLeadingSlash';
-import {getParser} from ""
+import getParser from './Parsers/getParser';
 
 class Server {
   routes: Array<Router | Route>;
@@ -60,18 +60,24 @@ class Server {
     };
   }
 
-  executeMatchingRoute(
+  async executeMatchingRoute(
     request: http.IncomingMessage,
     response: http.ServerResponse,
     route: Route,
   ) {
-    // check accepted data types and get parser
+    let bodyData: unknown = undefined;
+
+    //check accepted data types & run parser
     if (route.acceptedDataType) {
       const parser = getParser(route.acceptedDataType);
+      bodyData = await parser.parse(request);
     }
+
     // TODO: Execute Function and get response code from that
     response.writeHead(200);
-    response.end(route.handler!(request, response));
+    let resp = route.handler!(request, response, bodyData);
+    console.log(`response = ${resp}`);
+    response.end(resp);
   }
 
   address() {
