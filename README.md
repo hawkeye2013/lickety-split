@@ -223,3 +223,97 @@ for c in A B; do
 done
 
 ```
+
+## Testing Results
+
+Our stated goal of delivering lower overhead and faster response times than Express wouldn't mean much if we didn't include some test results proving the difference. Below is the output of two tests run with [artillery](https://www.artillery.io/), one against a Lickety Split server running on port 3000, the other against an Express server running on port 3001. Both servers are configured with the same listener: a listener for `GET /` requests that simply responds with the JSON string `{hello: "world"}`.
+
+We use the [`artillery quick`](https://www.artillery.io/docs/guides/guides/command-line#quick-v1-only) command to execute the same test against both servers: 20 virtual users (`--count 20`), with each user sending 100 `GET /` requests (`--num 100`), totaling 2000 requests for each server.
+
+Here are the results.
+
+```
+### LICKETY SPLIT SERVER TEST ###
+
+mbp:lickety-split-test austinhunt$ npx artillery@1.7.9 quick --num 100 --count 20 http://localhost:3000
+Started phase 0, duration: 1s @ 18:12:46(-0500) 2021-12-12
+Report @ 18:12:48(-0500) 2021-12-12
+Elapsed time: 2 seconds
+  Scenarios launched:  20
+  Scenarios completed: 20
+  Requests completed:  2000
+  Mean response/sec: 1015.23
+  Response time (msec):
+    min: 0
+    max: 27
+    median: 4
+    p95: 12
+    p99: 17
+  Codes:
+    200: 2000
+
+All virtual users finished
+Summary report @ 18:12:48(-0500) 2021-12-12
+  Scenarios launched:  20
+  Scenarios completed: 20
+  Requests completed:  2000
+  Mean response/sec: 1005.03
+  Response time (msec):
+    min: 0
+    max: 27
+    median: 4
+    p95: 12
+    p99: 17
+  Scenario counts:
+    0: 20 (100%)
+  Codes:
+    200: 2000
+
+
+### EXPRESS SERVER TEST ###
+
+mbp:lickety-split-test austinhunt$ npx artillery@1.7.9 quick --num 100 --count 20 http://localhost:3001
+Started phase 0, duration: 1s @ 18:12:52(-0500) 2021-12-12
+Report @ 18:12:54(-0500) 2021-12-12
+Elapsed time: 2 seconds
+  Scenarios launched:  20
+  Scenarios completed: 20
+  Requests completed:  2000
+  Mean response/sec: 1015.23
+  Response time (msec):
+    min: 0
+    max: 34
+    median: 4
+    p95: 13
+    p99: 20
+  Codes:
+    200: 2000
+
+All virtual users finished
+Summary report @ 18:12:54(-0500) 2021-12-12
+  Scenarios launched:  20
+  Scenarios completed: 20
+  Requests completed:  2000
+  Mean response/sec: 1010.1
+  Response time (msec):
+    min: 0
+    max: 34
+    median: 4
+    p95: 13
+    p99: 20
+  Scenario counts:
+    0: 20 (100%)
+  Codes:
+    200: 2000
+```
+
+And here's a table outlining the key values from the tests above:
+
+| Server        | Min | Max | Median | p95 | p99 |
+| ------------- | --- | --- | ------ | --- | --- |
+| Lickety Split | 0   | 27  | 4      | 12  | 17  |
+| Express       | 0   | 34  | 4      | 13  | 20  |
+
+### And there you have it folks!
+
+![ricky bobby lickety split](img/rickybobby.png)
